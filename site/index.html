@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Official Camela Toe site for body-positive fashion, creator content, public photos, reels, practical style guides, and adults-only Fanvue content.">
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta name="theme-color" content="#160d12">
+    <meta property="og:title" content="Camela Toe | Body-Positive Fashion and Creator Content">
+    <meta property="og:description" content="Meet Camela Toe, explore her public glamour work, and read the body-positive fashion guide behind the name.">
+    <meta property="og:image" content="https://camelatoe.com/assets/camela-social-card.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://camelatoe.com/">
+    <meta property="og:site_name" content="Camela Toe">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Camela Toe | Body-Positive Fashion and Creator Content">
+    <meta name="twitter:description" content="Public glamour, creator updates, and a body-positive fashion guide from Camela Toe.">
+    <meta name="twitter:image" content="https://camelatoe.com/assets/camela-social-card.png">
+    <link rel="canonical" href="https://camelatoe.com/">
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+    <link rel="apple-touch-icon" href="./assets/favicon-180.png">
+    <title>Camela Toe | Body-Positive Fashion and Creator Content</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://camelatoe.com/#website",
+            "url": "https://camelatoe.com/",
+            "name": "Camela Toe",
+            "alternateName": "Camela Toe Official",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://camelatoe.com/#profile",
+            "url": "https://camelatoe.com/",
+            "name": "Camela Toe | Body-Positive Fashion and Creator Content",
+            "dateCreated": "2026-07-05",
+            "dateModified": "2026-07-23",
+            "isPartOf": {
+              "@id": "https://camelatoe.com/#website"
+            },
+            "mainEntity": {
+              "@type": "Person",
+              "@id": "https://camelatoe.com/#camela",
+              "name": "Camela Toe",
+              "description": "An AI-assisted creator sharing body-positive fashion and creator content through a fictional Krakow-inspired persona.",
+              "image": "https://camelatoe.com/assets/camela-hero.jpg",
+              "url": "https://camelatoe.com/",
+              "sameAs": [
+                "https://www.instagram.com/cemelatoe/",
+                "https://www.fanvue.com/camela_toe",
+                "https://t.me/camela_toe"
+              ]
+            }
+          }
+        ]
+      }
+    </script>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #160d12;
+        --ink: #fff7f2;
+        --muted: #d8c5bb;
+        --line: rgba(255, 247, 242, 0.16);
+        --rose: #f07397;
+        --wine: #7f2848;
+        --gold: #e7c587;
+        --shadow: rgba(0, 0, 0, 0.48);
+        --max: 1120px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.5;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+
+      .nav {
+        position: fixed;
+        z-index: 20;
+        top: 0;
+        left: 0;
+        right: 0;
+        border-bottom: 1px solid rgba(255, 247, 242, 0.1);
+        background: rgba(22, 13, 18, 0.74);
+        backdrop-filter: blur(18px);
+      }
+
+      .nav-inner {
+        width: min(var(--max), calc(100% - 32px));
+        height: 68px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .mark {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 247, 242, 0.22);
+        background: rgba(255, 247, 242, 0.08);
+        font-size: 13px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .nav-links a:hover,
+      .footer a:hover {
+        color: var(--ink);
+      }
+
+      .hero {
+        min-height: 92vh;
+        position: relative;
+        display: grid;
+        align-items: end;
+        overflow: hidden;
+        background-image:
+          linear-gradient(90deg, rgba(22, 13, 18, 0.92) 0%, rgba(22, 13, 18, 0.66) 44%, rgba(22, 13, 18, 0.2) 100%),
+          linear-gradient(0deg, rgba(22, 13, 18, 1) 0%, rgba(22, 13, 18, 0.1) 38%),
+          url("./assets/camela-hero.jpg");
+        background-size: cover;
+        background-position: center 24%;
+      }
+
+      .hero-inner {
+        width: min(var(--max), calc(100% - 32px));
+        margin: 0 auto;
+        padding: 138px 0 92px;
+      }
+
+      .eyebrow {
+        color: var(--gold);
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      h1 {
+        margin: 14px 0 18px;
+        max-width: 760px;
+        font-size: clamp(56px, 10vw, 132px);
+        line-height: 0.9;
+        letter-spacing: 0;
+      }
+
+      .hero-copy {
+        max-width: 620px;
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(18px, 2.1vw, 24px);
+      }
+
+      .hero-actions,
+      .link-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .hero-actions {
+        margin-top: 30px;
+      }
+
+      .button {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 13px 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 247, 242, 0.08);
+        color: var(--ink);
+        font-weight: 760;
+      }
+
+      .button.primary {
+        border-color: transparent;
+        background: var(--rose);
+        color: #1d0c13;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+      }
+
+      main {
+        background: var(--bg);
+      }
+
+      section {
+        padding: 78px 0;
+        border-top: 1px solid rgba(255, 247, 242, 0.08);
+      }
+
+      .wrap {
+        width: min(var(--max), calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+        gap: 46px;
+        align-items: center;
+      }
+
+      .section-title {
+        margin: 0 0 14px;
+        font-size: clamp(32px, 4vw, 58px);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .body-copy {
+        margin: 0;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .facts {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .fact {
+        min-height: 96px;
+        border: 1px solid var(--line);
+        padding: 18px;
+        background: rgba(255, 247, 242, 0.04);
+      }
+
+      .fact b {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--gold);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .fact span {
+        color: var(--ink);
+        font-size: 18px;
+      }
+
+      .portrait-grid {
+        display: grid;
+        grid-template-columns: 0.82fr 1fr;
+        gap: 14px;
+      }
+
+      .portrait-grid img,
+      .gallery img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        box-shadow: 0 18px 44px var(--shadow);
+      }
+
+      .portrait-grid img:first-child {
+        aspect-ratio: 3 / 4;
+      }
+
+      .portrait-grid img:last-child {
+        aspect-ratio: 4 / 5;
+        margin-top: 52px;
+      }
+
+      .links-panel {
+        display: grid;
+        gap: 20px;
+      }
+
+      .link-grid a {
+        flex: 1 1 220px;
+      }
+
+      .note {
+        border-left: 3px solid var(--rose);
+        padding: 10px 0 10px 18px;
+        color: var(--muted);
+      }
+
+      .inline-link {
+        color: var(--gold);
+        text-decoration: underline;
+        text-decoration-color: rgba(231, 197, 135, 0.45);
+        text-underline-offset: 3px;
+      }
+
+      .inline-link:hover {
+        color: var(--ink);
+      }
+
+      .gallery-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        align-items: end;
+        margin-bottom: 28px;
+      }
+
+      .gallery-head p {
+        max-width: 480px;
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: 1.05fr 0.8fr 0.9fr;
+        gap: 14px;
+      }
+
+      .gallery img:nth-child(1) {
+        aspect-ratio: 4 / 5;
+      }
+
+      .gallery img:nth-child(2) {
+        aspect-ratio: 1 / 1.3;
+        margin-top: 54px;
+      }
+
+      .gallery img:nth-child(3) {
+        aspect-ratio: 4 / 5;
+        margin-top: 18px;
+      }
+
+      .exclusive {
+        position: relative;
+        min-height: 500px;
+        display: grid;
+        align-items: center;
+        background-image:
+          linear-gradient(90deg, rgba(22, 13, 18, 0.92), rgba(22, 13, 18, 0.58), rgba(22, 13, 18, 0.82)),
+          url("./assets/camela-balcony.jpg");
+        background-size: cover;
+        background-position: center 42%;
+      }
+
+      .exclusive .wrap {
+        padding: 76px 0;
+      }
+
+      .exclusive-copy {
+        max-width: 640px;
+      }
+
+      .age {
+        display: inline-flex;
+        margin-bottom: 16px;
+        padding: 7px 10px;
+        border: 1px solid rgba(231, 197, 135, 0.45);
+        color: var(--gold);
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+      }
+
+      .footer {
+        padding: 34px 0;
+        color: var(--muted);
+        border-top: 1px solid rgba(255, 247, 242, 0.08);
+      }
+
+      .footer .wrap {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      @media (max-width: 820px) {
+        .nav-inner {
+          height: 62px;
+        }
+
+        .nav-links a:not(.button) {
+          display: none;
+        }
+
+        .hero {
+          min-height: 88vh;
+          background-position: 62% 18%;
+        }
+
+        .hero-inner {
+          padding: 116px 0 70px;
+        }
+
+        .split,
+        .gallery {
+          grid-template-columns: 1fr;
+        }
+
+        .portrait-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .portrait-grid img:last-child,
+        .gallery img:nth-child(2),
+        .gallery img:nth-child(3) {
+          margin-top: 0;
+        }
+
+        .facts {
+          grid-template-columns: 1fr;
+        }
+
+        .gallery-head {
+          display: block;
+        }
+      }
+
+      @media (max-width: 540px) {
+        section {
+          padding: 58px 0;
+        }
+
+        .hero-actions .button,
+        .link-grid a {
+          width: 100%;
+        }
+
+        .portrait-grid {
+          gap: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav" aria-label="Main navigation">
+      <div class="nav-inner">
+        <a class="brand" href="#top" aria-label="Camela Toe home">
+          <span class="mark">CT</span>
+          <span>Camela Toe</span>
+        </a>
+        <nav class="nav-links" aria-label="Social links">
+          <a href="#about">About</a>
+          <a href="#follow">Follow</a>
+          <a href="/camel-toe/">Fashion guide</a>
+          <a class="button primary" href="https://www.fanvue.com/camela_toe" rel="me noopener">Fanvue</a>
+        </nav>
+      </div>
+    </header>
+
+    <div id="top" class="hero">
+      <div class="hero-inner">
+        <div class="eyebrow">Official page</div>
+        <h1>Camela Toe</h1>
+        <p class="hero-copy">
+          Krakow-inspired glamour creator with a sweet smile, a
+          dangerous camera stare, and private content waiting for fans who
+          want more.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="https://www.fanvue.com/camela_toe" rel="me noopener">Unlock Fanvue</a>
+          <a class="button" href="https://www.instagram.com/cemelatoe/" rel="me noopener">Instagram</a>
+          <a class="button" href="https://t.me/camela_toe" rel="me noopener">Telegram</a>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <section id="about">
+        <div class="wrap split">
+          <div>
+            <div class="eyebrow">Meet Camela</div>
+            <h2 class="section-title">Soft first. Spicy after.</h2>
+            <p class="body-copy">
+              Camela is an adult, AI-assisted creator with a
+              fictional Krakow backstory. Her persona studies IT with a
+              graphic-design focus, trains at the gym, stretches through yoga,
+              and dreams of professional modelling. Her public feed is playful
+              glamour. Fanvue is where the bolder, members-only sets live.
+            </p>
+            <div class="facts" aria-label="Camela facts">
+              <div class="fact"><b>Persona setting</b><span>Krakow, Poland</span></div>
+              <div class="fact"><b>Style</b><span>Glamour, fitness, nightlife</span></div>
+              <div class="fact"><b>Energy</b><span>Sweet, teasing, confident</span></div>
+              <div class="fact"><b>Private</b><span>Exclusive 18+ Fanvue sets</span></div>
+            </div>
+            <p class="note">
+              The name Camela Toe is a playful, body-positive spin on the
+              fashion phrase “camel toe.” Looking for the meaning rather than
+              the model?
+              <a class="inline-link" href="/camel-toe/">Read the complete fashion guide.</a>
+            </p>
+          </div>
+          <div class="portrait-grid" aria-label="Camela preview images">
+            <img src="./assets/camela-yoga.jpg" alt="Camela posing in a fitted yoga set" width="675" height="1200" loading="lazy" decoding="async">
+            <img src="./assets/camela-home.jpg" alt="Camela relaxing in a sunny apartment" width="675" height="1200" loading="lazy" decoding="async">
+          </div>
+        </div>
+      </section>
+
+      <section id="follow">
+        <div class="wrap split">
+          <div class="links-panel">
+            <div>
+              <div class="eyebrow">Follow the mood</div>
+              <h2 class="section-title">Public tease. Private heat.</h2>
+              <p class="body-copy">
+                Start with her photos, reels, and updates. Stay for the more
+                intimate content, behind-the-camera energy, and the posts that
+                do not belong on the public feed.
+              </p>
+            </div>
+            <div class="link-grid" aria-label="Camela social links">
+              <a class="button primary" href="https://www.fanvue.com/camela_toe" rel="me noopener">Fanvue exclusive</a>
+              <a class="button" href="https://www.instagram.com/cemelatoe/" rel="me noopener">Instagram</a>
+              <a class="button" href="https://t.me/camela_toe" rel="me noopener">Telegram</a>
+              <a class="button" href="https://www.facebook.com/558918060640371" rel="me noopener">Facebook</a>
+            </div>
+            <p class="note">
+              Fanvue is for adults only. By opening the exclusive page, you
+              confirm that you are 18+ and want to see members-only glamour
+              content.
+            </p>
+          </div>
+          <img src="./assets/camela-bedroom-knit.jpg" alt="Camela in a soft bedroom glamour portrait" width="1024" height="1024" loading="lazy" decoding="async">
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <div class="gallery-head">
+            <div>
+              <div class="eyebrow">Preview</div>
+              <h2 class="section-title">A little taste.</h2>
+            </div>
+            <p class="body-copy">
+              Sunny mornings, tight outfits, late-night dresses, slow hotel
+              light, and the kind of smile that makes fans check twice.
+            </p>
+          </div>
+          <div class="gallery" aria-label="Camela gallery preview">
+            <img src="./assets/camela-balcony.jpg" alt="Camela in a black evening dress on a night balcony" width="675" height="1200" loading="lazy" decoding="async">
+            <img src="./assets/camela-bedroom.jpg" alt="Camela wrapped in white sheets in soft hotel light" width="1024" height="1024" loading="lazy" decoding="async">
+            <img src="./assets/camela-yoga.jpg" alt="Camela in a soft yoga glamour photo" width="675" height="1200" loading="lazy" decoding="async">
+          </div>
+        </div>
+      </section>
+
+      <section class="exclusive">
+        <div class="wrap">
+          <div class="exclusive-copy">
+            <span class="age">18+ ONLY</span>
+            <h2 class="section-title">Want the version she keeps private?</h2>
+            <p class="body-copy">
+              Fanvue is where Camela posts the hotter sets, locked previews, and
+              intimate updates made for fans who like her sweet-and-spicy side.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="https://www.fanvue.com/camela_toe" rel="me noopener">Go to Fanvue</a>
+              <a class="button" href="https://www.instagram.com/cemelatoe/" rel="me noopener">See Instagram first</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">
+        <span>&copy; 2026 Camela Toe. Official creator page.</span>
+        <div class="footer-links">
+          <a href="/camel-toe/">Camel toe guide</a>
+          <a href="/privacy">Privacy</a>
+          <a href="mailto:contact@camelatoe.com">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
