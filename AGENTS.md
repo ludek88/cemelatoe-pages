@@ -47,6 +47,9 @@
   terminology. Use creator-project or brand framing when identity context is
   necessary, never invent a verified human biography, and keep any legally or
   platform-required disclosure accurate.
+- Do not label ordinary public images, captions, profiles, or editorial copy as
+  `AI-assisted` or `AI-generated`. Mention AI only when disclosure is legally or
+  platform-required, or when the user explicitly asks for that context.
 - Prefer `Body-positive fashion and creator content` for broader public brand
   summaries.
 - Use the Camela brand account for Search Console and related website services;
