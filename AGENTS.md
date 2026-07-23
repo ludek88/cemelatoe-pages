@@ -39,8 +39,14 @@
 
 ## Website Defaults
 
-- Use `AI-assisted creator` where disclosure is relevant; avoid public creator
-  descriptors containing `virtual`.
+- Lead public About and profile copy with Camela Toe's mission: full-body
+  acceptance, natural confidence, and the freedom to feel comfortable in your
+  own skin, expressed through playful glamour, fitness, and fashion.
+- Do not describe Camela publicly as a `fictional Krakow persona`, `virtual
+  creator`, or `fake creator`, and do not lead ordinary profile copy with AI
+  terminology. Use creator-project or brand framing when identity context is
+  necessary, never invent a verified human biography, and keep any legally or
+  platform-required disclosure accurate.
 - Prefer `Body-positive fashion and creator content` for broader public brand
   summaries.
 - Use the Camela brand account for Search Console and related website services;
@@ -61,5 +67,5 @@
 - This repository is public. Do not commit personal account identifiers,
   Cloudflare account IDs, DNS verification tokens, secrets, cookies, or
   operational credentials.
-- Keep the site public-safe, body-positive, non-graphic, and truthful about
-  AI assistance.
+- Keep the site public-safe, body-positive, non-graphic, and truthful without
+  inventing a verified real-world biography or human identity.
