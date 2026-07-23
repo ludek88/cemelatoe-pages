@@ -25,13 +25,15 @@ competition, and continued editorial work—not a one-time technical score.
 
 - One canonical origin: `https://camelatoe.com`.
 - Self-referencing canonical and Open Graph URLs on indexable pages.
-- Public positioning uses `AI-assisted creator` where disclosure is relevant
-  and `Body-positive fashion and creator content` for broader brand summaries.
-  Avoid public creator descriptors containing `virtual`.
+- Public positioning leads with full-body acceptance, natural confidence, and
+  the freedom to feel comfortable in your own skin. Avoid `fictional Krakow
+  persona`, `virtual creator`, `fake creator`, and AI-led ordinary profile
+  copy. Use creator-project or brand framing instead of inventing a verified
+  human biography.
 - A real crawler-readable `robots.txt` and XML sitemap.
 - A real `404.html`, preventing unknown URLs from returning homepage content.
 - `noindex` on legal utility pages and the `camela-toe.pages.dev` mirror.
-- `WebSite`, `ProfilePage`, `Person`, `Article`, `BreadcrumbList`, and
+- `WebSite`, `ProfilePage`, `Organization`, `Article`, `BreadcrumbList`, and
   appropriate FAQ structured data.
 - A topic hub plus two independently useful supporting guides.
 - Descriptive internal links between the creator profile, topic hub, definition,
@@ -61,8 +63,10 @@ hosting migration. The initial setup was completed on 2026-07-23:
      `https://camelatoe.com/*`, preserving path and query string.
    - Keep the existing `.pl` redirect aliases pointed at the `.com` apex.
 3. **Measurement**
-   - Enable Cloudflare Web Analytics for the Pages project or add another
-     consent-appropriate analytics tool.
+   - Cloudflare Web Analytics: **enabled for the `camela-toe` Pages project
+     and activated by a production deployment on 2026-07-23**.
+   - The live `https://camelatoe.com/` response was verified to contain
+     Cloudflare's injected analytics beacon.
    - Record Search Console queries, pages, countries, clicks, and impressions
      monthly. Cloudflare request counts are not a substitute for search data.
 
@@ -118,8 +122,8 @@ bots, asset requests, or low-intent traffic and is not the north-star metric.
 - Write for an adult reader’s question, not for a keyword density target.
 - Keep public pages non-graphic, respectful, body-positive, and medically
   cautious.
-- Use the concise disclosure `AI-assisted creator` where relevant without
-  over-emphasizing it in unrelated public copy.
+- Keep identity wording accurate without making AI terminology the focus of
+  unrelated public copy; retain any legally or platform-required disclosure.
 - Use original text and sources only where they genuinely help verification.
 - Do not publish thin location pages, spun synonyms, hidden text, doorway pages,
   or artificial link schemes.

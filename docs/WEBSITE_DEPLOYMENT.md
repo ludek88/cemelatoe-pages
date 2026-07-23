@@ -116,19 +116,20 @@ Expected:
 
 The workflow is `.github/workflows/deploy-site.yml`.
 
-It validates relevant pushes to `main` and deploys `site/` only when this
-repository has both Actions secrets:
+It validates relevant pushes to `main` and then deploys `site/`. The deploy
+fails visibly instead of silently skipping when either required Actions secret
+is missing:
 
 ```text
 CLOUDFLARE_API_TOKEN
 CLOUDFLARE_ACCOUNT_ID
 ```
 
-GitHub secrets do not transfer between repositories. As of the repository
-split on 2026-07-23, add fresh scoped values to `ludek88/cemelatoe-pages` before
-expecting automatic deployment. Until then, validation still runs and the
-deployment step intentionally skips; use the authenticated local Wrangler
-command for production releases.
+GitHub secrets do not transfer between repositories. Use a dedicated
+account-scoped API token with only Cloudflare Pages Read and Pages Write
+permissions for the Camela account. Never reuse an R2 access key or a broader
+personal token. The two repository secrets were configured on 2026-07-23;
+rotate them in GitHub and Cloudflare together when required.
 
 Do not also enable Cloudflare dashboard Git integration unless duplicate
 production deploy systems are intentional.

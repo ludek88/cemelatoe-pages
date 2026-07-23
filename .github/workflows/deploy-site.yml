@@ -45,18 +45,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Skip deploy when Cloudflare secrets are missing
-        if: ${{ env.CLOUDFLARE_API_TOKEN == '' || env.CLOUDFLARE_ACCOUNT_ID == '' }}
-        shell: bash
-        run: |
-          echo "Cloudflare deploy skipped."
-          echo "Add GitHub repository secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID to enable automatic deploys."
-
-      - name: Deploy site directory
-        if: ${{ env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' }}
+      - name: Require Cloudflare credentials
         shell: bash
         run: |
           set -euo pipefail
-          npx --yes wrangler pages deploy site \
+          if [[ -z "${CLOUDFLARE_API_TOKEN}" || -z "${CLOUDFLARE_ACCOUNT_ID}" ]]; then
+            echo "::error::Add repository secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID."
+            exit 1
+          fi
+
+      - name: Deploy site directory
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 pages deploy site \
             --project-name camela-toe \
             --branch main
