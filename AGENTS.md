@@ -58,6 +58,15 @@
   `www.camelatoe.pl` are redirect-only aliases.
 - Keep the `pages.dev` mirror out of search results.
 - Validate with `python3 scripts/validate_site_seo.py` before deployment.
+- Recurring SEO editorial work is orchestrated from the private sibling
+  repository and may open a draft pull request here. Keep it approval-first:
+  never auto-merge or deploy an editorial draft, never open a second SEO draft
+  while one remains open, and publish at most one new article per weekly run.
+- Every new indexable article must add a canonical sitemap entry, useful
+  bidirectional internal links, original people-first copy, first-party social
+  preview imagery, and valid Article/Breadcrumb structured data. The validator
+  discovers indexable `index.html` pages automatically and requires the sitemap
+  to match them exactly.
 - Deploy manually with
   `npx --yes wrangler pages deploy site --project-name camela-toe --branch main`
   or use `.github/workflows/deploy-site.yml` after this repository has its own
@@ -72,3 +81,7 @@
   operational credentials.
 - Keep the site public-safe, body-positive, non-graphic, and truthful without
   inventing a verified real-world biography or human identity.
+- Do not automate bulk outreach, paid links, reciprocal-link schemes, comment
+  backlinks, directory spam, or fabricated citations. Automated link research
+  may prepare a private opportunity report and personalized drafts, but sending
+  outreach requires explicit operator approval.

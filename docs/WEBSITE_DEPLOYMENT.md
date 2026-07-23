@@ -59,9 +59,10 @@ python3 -m http.server 9876 --bind 127.0.0.1 --directory site
 
 Open `http://127.0.0.1:9876/`.
 
-The validator checks the four indexable pages, unique metadata, self-canonical
-URLs, Open Graph data, JSON-LD, internal links, image dimensions, the sitemap,
-robots rules, a real 404 page, and `pages.dev` noindex protection.
+The validator discovers all indexable `index.html` pages and checks unique
+metadata, self-canonical URLs, Open Graph data, JSON-LD, internal links, image
+dimensions, exact sitemap coverage, robots rules, a real 404 page, and
+`pages.dev` noindex protection.
 
 ## Manual Cloudflare Deployment
 

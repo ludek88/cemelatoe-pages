@@ -14,11 +14,11 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
 ORIGIN = "https://camelatoe.com"
-INDEXABLE = {
-    "/": SITE / "index.html",
-    "/camel-toe/": SITE / "camel-toe" / "index.html",
-    "/camel-toe/meaning/": SITE / "camel-toe" / "meaning" / "index.html",
-    "/camel-toe/leggings/": SITE / "camel-toe" / "leggings" / "index.html",
+REQUIRED_ROUTES = {
+    "/",
+    "/camel-toe/",
+    "/camel-toe/meaning/",
+    "/camel-toe/leggings/",
 }
 
 
@@ -115,13 +115,46 @@ def canonical_image_exists(image_url: str) -> bool:
     return (SITE / parsed.path.lstrip("/")).is_file()
 
 
-def validate() -> list[str]:
+def robots_tokens(parser: PageParser) -> set[str]:
+    if len(parser.robots) != 1:
+        return set()
+    return {
+        token
+        for token in parser.robots[0].replace(",", " ").split()
+        if token
+    }
+
+
+def route_for_index(file_path: Path) -> str:
+    relative = file_path.relative_to(SITE)
+    if relative == Path("index.html"):
+        return "/"
+    return f"/{relative.parent.as_posix().strip('/')}/"
+
+
+def discover_indexable_pages() -> dict[str, Path]:
+    pages: dict[str, Path] = {}
+    for file_path in sorted(SITE.rglob("index.html")):
+        parser = PageParser()
+        parser.feed(file_path.read_text(encoding="utf-8"))
+        tokens = robots_tokens(parser)
+        if "index" in tokens and "noindex" not in tokens:
+            pages[route_for_index(file_path)] = file_path
+    return pages
+
+
+def validate(indexable: dict[str, Path] | None = None) -> list[str]:
     errors: list[str] = []
     titles: dict[str, str] = {}
     descriptions: dict[str, str] = {}
     canonicals: dict[str, str] = {}
+    indexable = indexable or discover_indexable_pages()
 
-    for route, file_path in INDEXABLE.items():
+    missing_required = REQUIRED_ROUTES - set(indexable)
+    if missing_required:
+        errors.append(f"missing required indexable routes: {sorted(missing_required)}")
+
+    for route, file_path in sorted(indexable.items()):
         label = file_path.relative_to(ROOT)
         if not file_path.is_file():
             errors.append(f"{label}: missing indexable page")
@@ -157,7 +190,8 @@ def validate() -> list[str]:
             errors.append(f"{label}: og:url must be exactly {expected_url}")
         if len(parser.og_images) != 1 or not canonical_image_exists(parser.og_images[0]):
             errors.append(f"{label}: needs one existing first-party social preview image")
-        if len(parser.robots) != 1 or "index" not in parser.robots[0]:
+        tokens = robots_tokens(parser)
+        if "index" not in tokens or "noindex" in tokens:
             errors.append(f"{label}: page must explicitly allow indexing")
         if not parser.json_ld:
             errors.append(f"{label}: missing JSON-LD")
@@ -195,7 +229,7 @@ def validate() -> list[str]:
             root = ET.parse(sitemap_path).getroot()
             namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
             urls = {node.text for node in root.findall("sm:url/sm:loc", namespace)}
-            expected = {f"{ORIGIN}{route}" for route in INDEXABLE}
+            expected = {f"{ORIGIN}{route}" for route in indexable}
             if urls != expected:
                 errors.append(f"site/sitemap.xml: expected exactly {sorted(expected)}, found {sorted(urls)}")
         except ET.ParseError as exc:
@@ -226,10 +260,11 @@ def validate() -> list[str]:
 
 
 if __name__ == "__main__":
-    failures = validate()
+    pages = discover_indexable_pages()
+    failures = validate(pages)
     if failures:
         print("SEO validation failed:")
         for failure in failures:
             print(f"  - {failure}")
         sys.exit(1)
-    print(f"SEO validation passed for {len(INDEXABLE)} indexable pages.")
+    print(f"SEO validation passed for {len(pages)} indexable pages.")

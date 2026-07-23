@@ -72,6 +72,28 @@ hosting migration. The initial setup was completed on 2026-07-23:
 
 ## Editorial roadmap
 
+### Approval-first weekly automation
+
+The private `ludek88/cemelatoe` repository owns the recurring editorial
+orchestration. Once per week it may inspect Search Console, the current site,
+and public search results, then update an existing guide or open one draft pull
+request in this repository.
+
+- Skip the run when another SEO editorial pull request remains open.
+- Prefer improving an existing page when it already satisfies the query intent.
+- Create at most one new article in a run and no more frequently than every
+  seven days.
+- Require original research or a clearly useful editorial contribution; do not
+  publish a rewritten summary of competing pages.
+- Add the sitemap entry, bidirectional internal links, metadata, structured
+  data, and an existing approved first-party image or a separately reviewed
+  public-safe editorial image.
+- Run `python3 scripts/validate_site_seo.py` before opening the draft.
+- Never auto-merge. Human approval of the draft PR is the publication gate;
+  the existing `main` workflow then deploys the reviewed source.
+- Link research may create a private opportunity report and outreach drafts,
+  but sending messages or creating backlinks is never automatic.
+
 ### First 30 days
 
 - Confirm all four sitemap URLs are indexed.
