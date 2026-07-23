@@ -106,6 +106,15 @@ def local_target_exists(href: str) -> bool:
     )
 
 
+def canonical_image_exists(image_url: str) -> bool:
+    parsed = urlparse(image_url)
+    if f"{parsed.scheme}://{parsed.netloc}" != ORIGIN:
+        return False
+    if not parsed.path.startswith("/assets/"):
+        return False
+    return (SITE / parsed.path.lstrip("/")).is_file()
+
+
 def validate() -> list[str]:
     errors: list[str] = []
     titles: dict[str, str] = {}
@@ -146,8 +155,8 @@ def validate() -> list[str]:
             canonicals[expected_url] = str(label)
         if parser.og_urls != [expected_url]:
             errors.append(f"{label}: og:url must be exactly {expected_url}")
-        if parser.og_images != [f"{ORIGIN}/assets/camela-social-card.png"]:
-            errors.append(f"{label}: missing canonical social preview image")
+        if len(parser.og_images) != 1 or not canonical_image_exists(parser.og_images[0]):
+            errors.append(f"{label}: needs one existing first-party social preview image")
         if len(parser.robots) != 1 or "index" not in parser.robots[0]:
             errors.append(f"{label}: page must explicitly allow indexing")
         if not parser.json_ld:
