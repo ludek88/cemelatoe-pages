@@ -28,7 +28,7 @@ branches, commits, tests, and pull requests.
 - `site/data-deletion.html` - data deletion page kept for Meta/app review.
 - `site/404.html` - real not-found page with `noindex`.
 - `site/robots.txt` - crawler access and canonical sitemap location.
-- `site/sitemap.xml` - only the four public, indexable canonical pages.
+- `site/sitemap.xml` - all public, indexable canonical pages.
 - `site/_headers` - security/cache headers and `noindex` for `pages.dev`.
 - `site/CNAME` - custom domain declaration for `camelatoe.com`.
 - `site/assets/` - optimized public image assets.
@@ -62,11 +62,12 @@ Run the same technical SEO contract used by CI:
 python3 scripts/validate_site_seo.py
 ```
 
-The validator checks unique titles and descriptions, self-referencing
+The validator discovers every `index.html` page that explicitly allows
+indexing, then checks unique titles and descriptions, self-referencing
 canonicals, robots directives, Open Graph URLs, valid JSON-LD, internal links,
 image dimensions, the sitemap, the real 404 page, and `pages.dev` index
-protection. Update the validator and sitemap whenever a new indexable page is
-added.
+protection. Add each new indexable page to the sitemap; CI fails if the sitemap
+and discovered pages differ.
 
 ## Deployment
 
@@ -91,8 +92,8 @@ CLOUDFLARE_API_TOKEN
 CLOUDFLARE_ACCOUNT_ID
 ```
 
-Until those secrets are present, the workflow intentionally skips deployment
-instead of failing.
+If either secret is absent, the workflow fails visibly instead of reporting a
+misleading successful deployment.
 
 ## Domains
 
@@ -123,4 +124,6 @@ to action should point to Fanvue without explicit public-page wording.
 
 Keep topic articles useful, original, body-positive, and reviewed by a person.
 Do not mass-produce keyword variants or promise health outcomes. The operating
-roadmap and measurement plan live in `docs/WEBSITE_SEO_PLAN.md`.
+roadmap and measurement plan live in `docs/WEBSITE_SEO_PLAN.md`. Weekly
+research and draft-PR orchestration lives in the private sibling repository;
+merging a reviewed website PR remains the publication approval.

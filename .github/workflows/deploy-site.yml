@@ -31,6 +31,7 @@ jobs:
           set -euo pipefail
           test -f site/CNAME
           grep -q "camelatoe.com" site/CNAME
+          python3 -m unittest discover -s tests -p "test_*.py"
           python3 scripts/validate_site_seo.py
 
   deploy:
