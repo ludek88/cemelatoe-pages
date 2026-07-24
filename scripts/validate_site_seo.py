@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import sys
 import xml.etree.ElementTree as ET
+from datetime import datetime
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
@@ -143,6 +144,27 @@ def discover_indexable_pages() -> dict[str, Path]:
     return pages
 
 
+def structured_data_nodes(value: object):
+    if isinstance(value, dict):
+        yield value
+        for child in value.values():
+            yield from structured_data_nodes(child)
+    elif isinstance(value, list):
+        for child in value:
+            yield from structured_data_nodes(child)
+
+
+def is_iso8601_datetime_with_timezone(value: object) -> bool:
+    if not isinstance(value, str) or "T" not in value:
+        return False
+    normalized = value[:-1] + "+00:00" if value.endswith("Z") else value
+    try:
+        parsed = datetime.fromisoformat(normalized)
+    except ValueError:
+        return False
+    return parsed.tzinfo is not None
+
+
 def validate(indexable: dict[str, Path] | None = None) -> list[str]:
     errors: list[str] = []
     titles: dict[str, str] = {}
@@ -197,9 +219,24 @@ def validate(indexable: dict[str, Path] | None = None) -> list[str]:
             errors.append(f"{label}: missing JSON-LD")
         for block in parser.json_ld:
             try:
-                json.loads(block)
+                structured_data = json.loads(block)
             except json.JSONDecodeError as exc:
                 errors.append(f"{label}: invalid JSON-LD ({exc})")
+                continue
+            for node in structured_data_nodes(structured_data):
+                node_types = node.get("@type")
+                if isinstance(node_types, str):
+                    node_types = [node_types]
+                if not isinstance(node_types, list) or "ProfilePage" not in node_types:
+                    continue
+                for property_name in ("dateCreated", "dateModified"):
+                    if property_name in node and not is_iso8601_datetime_with_timezone(
+                        node[property_name]
+                    ):
+                        errors.append(
+                            f"{label}: ProfilePage {property_name} must be an "
+                            "ISO 8601 DateTime with timezone"
+                        )
         for href in parser.links:
             if not local_target_exists(href):
                 errors.append(f"{label}: broken internal link {href}")

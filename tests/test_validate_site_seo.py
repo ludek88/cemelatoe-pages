@@ -57,5 +57,19 @@ class DiscoverIndexablePagesTest(unittest.TestCase):
                 MODULE.SITE = original_site
 
 
+class StructuredDataDateTimeTest(unittest.TestCase):
+    def test_accepts_iso8601_datetime_with_offset(self) -> None:
+        self.assertTrue(
+            MODULE.is_iso8601_datetime_with_timezone("2026-07-23T09:20:56+02:00")
+        )
+        self.assertTrue(MODULE.is_iso8601_datetime_with_timezone("2026-07-23T07:20:56Z"))
+
+    def test_rejects_date_only_or_timezone_free_values(self) -> None:
+        self.assertFalse(MODULE.is_iso8601_datetime_with_timezone("2026-07-23"))
+        self.assertFalse(
+            MODULE.is_iso8601_datetime_with_timezone("2026-07-23T09:20:56")
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
