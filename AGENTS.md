@@ -16,6 +16,11 @@
 - The private content and publishing automation repository is
   `https://github.com/ludek88/cemelatoe`.
 - Its expected sibling checkout is `/Users/maciej/Documents/cemelatoe`.
+- Shared Camela skills are version-controlled only in the private sibling at
+  `../cemelatoe/.agents/skills`. Install them from that repository with
+  `scripts/install_project_skills.py` so Codex can discover the same workflows
+  while working in this public website repository on macOS or Windows. Do not
+  duplicate skill source in this public repository.
 - Before changing automation, providers, publishing, Telegram, scheduling,
   Fanvue, Instagram, Hedra, ElevenLabs, or Affogato behavior, read the sibling
   repository's `AGENTS.md` and make the change there.
