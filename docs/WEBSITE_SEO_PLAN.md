@@ -1,6 +1,6 @@
 # Camela Toe SEO Goal and Operating Plan
 
-Last updated: 2026-07-23
+Last updated: 2026-07-25
 
 ## North-star goal
 
@@ -56,6 +56,11 @@ hosting migration. The initial setup was completed on 2026-07-23:
      tokens remain**.
    - `https://camelatoe.com/sitemap.xml`: **submitted successfully; 4 pages discovered**.
    - Initial indexing requests: **submitted for the homepage and all 3 guides**.
+   - Profile page structured data: **1 valid item and 0 invalid items**. On
+     2026-07-25, Search Console marked the previous invalid datetime issues for
+     both `dateCreated` and `dateModified` as **Passed**. The live homepage was
+     rechecked and still exposes full ISO 8601 values with explicit `+02:00`
+     offsets.
    - Do not repeatedly resubmit unchanged pages.
 2. **Canonical hostname**
    - Cloudflare Redirect Rule is **active** so
