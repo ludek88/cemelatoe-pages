@@ -1,6 +1,6 @@
 # Camela Toe SEO Goal and Operating Plan
 
-Last updated: 2026-07-23
+Last updated: 2026-07-25
 
 ## North-star goal
 
@@ -56,6 +56,11 @@ hosting migration. The initial setup was completed on 2026-07-23:
      tokens remain**.
    - `https://camelatoe.com/sitemap.xml`: **submitted successfully; 4 pages discovered**.
    - Initial indexing requests: **submitted for the homepage and all 3 guides**.
+   - Profile page structured data: **1 valid item and 0 invalid items**. On
+     2026-07-25, Search Console marked the previous invalid datetime issues for
+     both `dateCreated` and `dateModified` as **Passed**. The live homepage was
+     rechecked and still exposes full ISO 8601 values with explicit `+02:00`
+     offsets.
    - Do not repeatedly resubmit unchanged pages.
 2. **Canonical hostname**
    - Cloudflare Redirect Rule is **active** so
@@ -72,14 +77,15 @@ hosting migration. The initial setup was completed on 2026-07-23:
 
 ## Editorial roadmap
 
-### Approval-first weekly automation
+### Validated direct-main weekly automation
 
 The private `ludek88/cemelatoe` repository owns the recurring editorial
 orchestration. Once per week it may inspect Search Console, the current site,
-and public search results, then update an existing guide or open one draft pull
-request in this repository.
+and public search results, then update an existing guide or add one supported
+article in this repository.
 
-- Skip the run when another SEO editorial pull request remains open.
+- Do not skip solely because a legacy SEO pull request remains open; verify
+  whether its content is already on `main` and avoid duplication.
 - Prefer improving an existing page when it already satisfies the query intent.
 - Create at most one new article in a run and no more frequently than every
   seven days.
@@ -88,9 +94,10 @@ request in this repository.
 - Add the sitemap entry, bidirectional internal links, metadata, structured
   data, and an existing approved first-party image or a separately reviewed
   public-safe editorial image.
-- Run `python3 scripts/validate_site_seo.py` before opening the draft.
-- Never auto-merge. Human approval of the draft PR is the publication gate;
-  the existing `main` workflow then deploys the reviewed source.
+- Run `python3 scripts/validate_site_seo.py` before committing.
+- Commit only the validated website diff directly to local `main` and push
+  `origin main` without force-pushing. A configured `main` workflow may then
+  deploy the validated source.
 - Link research may create a private opportunity report and outreach drafts,
   but sending messages or creating backlinks is never automatic.
 

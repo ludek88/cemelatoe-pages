@@ -25,8 +25,8 @@
   Fanvue, Instagram, Hedra, ElevenLabs, or Affogato behavior, read the sibling
   repository's `AGENTS.md` and make the change there.
 - When one user request genuinely spans both projects, inspect both instruction
-  files and use separate branches, commits, tests, pushes, and pull requests for
-  each repository.
+  files and use separate commits, tests, and direct pushes to each repository's
+  `main`. Do not create a pull request unless the user explicitly asks for one.
 - Never copy `.env`, runtime files, provider tokens, API keys, browser sessions,
   or private media between repositories.
 
@@ -64,9 +64,10 @@
 - Keep the `pages.dev` mirror out of search results.
 - Validate with `python3 scripts/validate_site_seo.py` before deployment.
 - Recurring SEO editorial work is orchestrated from the private sibling
-  repository and may open a draft pull request here. Keep it approval-first:
-  never auto-merge or deploy an editorial draft, never open a second SEO draft
-  while one remains open, and publish at most one new article per weekly run.
+  repository. After the website diff passes validation and safety review,
+  commit it directly to local `main` and push `origin main` without
+  force-pushing. Create a pull request only when the user explicitly asks for
+  one, and publish at most one new article per weekly run.
 - Every new indexable article must add a canonical sitemap entry, useful
   bidirectional internal links, original people-first copy, first-party social
   preview imagery, and valid Article/Breadcrumb structured data. The validator

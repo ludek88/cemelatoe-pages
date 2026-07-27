@@ -16,7 +16,8 @@ repositories as sibling local checkouts:
 
 Each repository contains an `AGENTS.md` file that routes cross-project work to
 the correct checkout. A request spanning both projects must use separate
-branches, commits, tests, and pull requests.
+commits, tests, and direct pushes to each repository's `main`; create a pull
+request only when the user explicitly requests one.
 
 ## Files
 
@@ -122,8 +123,9 @@ marking `camela-toe.pages.dev` as `noindex`.
 Keep the homepage public-safe and creator-focused. The private/paid content call
 to action should point to Fanvue without explicit public-page wording.
 
-Keep topic articles useful, original, body-positive, and reviewed by a person.
-Do not mass-produce keyword variants or promise health outcomes. The operating
-roadmap and measurement plan live in `docs/WEBSITE_SEO_PLAN.md`. Weekly
-research and draft-PR orchestration lives in the private sibling repository;
-merging a reviewed website PR remains the publication approval.
+Keep topic articles useful, original, body-positive, and reviewed before
+publication. Do not mass-produce keyword variants or promise health outcomes.
+The operating roadmap and measurement plan live in
+`docs/WEBSITE_SEO_PLAN.md`. Weekly research orchestration lives in the private
+sibling repository; validated website changes are committed and pushed
+directly to `main`.
