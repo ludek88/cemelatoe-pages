@@ -2,19 +2,26 @@
 
 | Stage | Model / effort |
 | --- | --- |
-| Implementation, tests, docs, ordinary debugging | GPT-6.1 Sol / medium |
+| Clear, bounded, low-risk simple or repetitive work, including safe small documentation edits and mechanical code edits with obvious intent | GPT-6 Luna / medium |
+| Ambiguous work, behavior changes, nontrivial debugging or cross-cutting implementation | GPT-6.1 Sol / medium |
 | Reproduced difficult implementation defect | GPT-6.1 Sol / high |
+| Useful bounded read-only inventory | GPT-6 Luna / medium |
 | Architecture or unresolved cross-module defect | GPT-6 Astra / high |
 | Independent review of credentials, publishing or durable state | GPT-6 Astra / high |
-| Useful bounded read-only inventory | GPT-6 Luna / medium (optional) |
 
 Apply this table automatically at each meaningful stage, including resumed work.
+For Luna work, keep one implementation owner and escalate if the task becomes
+ambiguous, changes behavior, requires nontrivial debugging or crosses subsystem
+boundaries. A small diff does not reduce the risk of publishing, credential or
+durable-state work; retain its applicable implementation and independent review
+routes.
 Do not ask the operator to repeat model selection while a supported route exists.
 Verify the tool accepts the exact model ID and reasoning effort, then pass both
-explicitly when dispatching: `gpt-6.1-sol`/`medium` for routine implementation,
-`gpt-6.1-sol`/`high` for a reproduced difficult defect, `gpt-6-astra`/`high` for
-architecture or required independent safety review, and optional
-`gpt-6-luna`/`medium` for useful bounded read-only inventory.
+explicitly when dispatching: `gpt-6-luna`/`medium` for clear bounded low-risk
+simple work, `gpt-6.1-sol`/`medium` for ambiguous, behavior-changing, nontrivial
+or cross-cutting implementation, `gpt-6.1-sol`/`high` for a reproduced
+difficult defect, and `gpt-6-astra`/`high` for architecture or required
+independent safety review.
 
 A user-confirmed parent selection persists until the user changes it; record it
 as user-confirmed rather than runtime telemetry. Work directly when the parent

@@ -35,6 +35,11 @@
 For every stage, follow `docs/CODE_REVIEW_WORKFLOW.md` automatically. Use supported
 model-specific dispatch without repeated manual selector requests; preserve user
 overrides and distinguish the routed agent from the unchanged parent selector.
+Route clear, bounded, low-risk simple or repetitive work, including safe small
+documentation edits and obvious mechanical code edits, to GPT-6 Luna / medium.
+Escalate ambiguity, behavior changes, nontrivial debugging and cross-cutting
+work to GPT-6.1 Sol / medium; retain the documented Sol / high and Astra / high
+routes and all existing publishing, credential and durable-state review gates.
 Shared Camela skills remain owned by the private sibling.
 
 ## Routing Rules
