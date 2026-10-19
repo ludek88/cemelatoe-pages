@@ -30,6 +30,13 @@
 - Never copy `.env`, runtime files, provider tokens, API keys, browser sessions,
   or private media between repositories.
 
+## Coding-Agent Model Routing
+
+For every stage, follow `docs/CODE_REVIEW_WORKFLOW.md` automatically. Use supported
+model-specific dispatch without repeated manual selector requests; preserve user
+overrides and distinguish the routed agent from the unchanged parent selector.
+Shared Camela skills remain owned by the private sibling.
+
 ## Routing Rules
 
 - Website pages, HTML, CSS, public images, SEO, structured data, robots,

@@ -1,4 +1,6 @@
 name: Deploy Camela Website
+# Coding-agent model routing: docs/CODE_REVIEW_WORKFLOW.md; apply supported agent dispatch automatically.
+# This deterministic workflow neither switches the chat selector nor launches paid AI.
 
 on:
   push:
