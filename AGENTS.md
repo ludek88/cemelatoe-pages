@@ -1,5 +1,21 @@
 # Camela Toe Website Agent Instructions
 
+## Mandatory automatic resume preflight (2026-10-19)
+
+On startup/resume, every user goal Resume, compaction recovery and automatic
+continuation after a checkpoint, freshly read current applicable root/worktree
+`AGENTS.md`, workflow/routing and required safety rules, plus the latest matching
+goal-specific handoff, before substantive work. No user reminder is required.
+Follow `docs/CODE_REVIEW_WORKFLOW.md#automatic-resume-preflight-2026-10-19`
+for checkout/source reconciliation, missing or stale handoffs and the small
+in-place private receipt. A user Resume continues only that goal's existing
+scope; saving this rule grants no resume or new action authority. Preserve all
+gates and schedules. This is agent behavior, not a verified platform hook.
+
+## Context discipline and handoffs (2026-10-19)
+
+Follow `docs/CODE_REVIEW_WORKFLOW.md` under “Context discipline and handoffs (2026-10-19)”. Keep private task notes outside this tracked public repository. Existing chats adopt the rule on their next instruction reread; they do not hot-reload.
+
 ## Project Role
 
 - This repository is the standalone public website project for

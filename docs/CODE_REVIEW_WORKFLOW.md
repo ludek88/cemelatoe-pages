@@ -51,3 +51,55 @@ and review code, public behavior and reliability before direct-to-main delivery.
 Shared Camela skill source and automation-review details remain in the private
 sibling repository. Do not copy private source or runtime data into this public
 repository. Changes to this workflow grant no new publishing authority.
+
+## Context discipline and handoffs (2026-10-19)
+
+Use one bounded objective and a clear stop condition per work package. Keep closely related debugging with the same owner. At a milestone or interruption, write a 150–250 word handoff with the exact checkout, branch and HEAD; pending edits; validation actually run (separate from reported or historical results); open gates; one next bounded action; and authorization limits. Recommend a fresh chat when the objective changes, but create one only if the user asks. Do not create or message chats, compact or reset them, or resume paused, blocked or usage-limited goals merely to apply this policy. A handoff is evidence, not authority to resume.
+
+Read mandatory current instructions and safety gates once per unchanged source snapshot. Use targeted reference sections and bounded evidence instead of bulk logs or history; reread sources when they change. Use existing scripts and run handles for waits; avoid repeated AI polling when a blocker is unchanged. Do not introduce timers or replace mandated schedule checks. Scheduled work due under standing authority and actionable recovery may continue; an unchanged blocker on one item does not stop unrelated actionable work.
+
+Keep public-repository task notes outside tracked public content; never place private chat IDs, paths, media or secrets here. Preserve existing content-bound QA, approvals and applicable publishing gates. Context savings never waive them. Keep established schedules unchanged.
+
+## Automatic resume preflight (2026-10-19)
+
+On startup/resume, every user goal Resume, compaction recovery, and automatic
+continuation after a checkpoint, perform this preflight automatically before
+substantive edits, generation, CI, publishing, deployment or trading actions.
+The user does not need to remind the agent to reread instructions.
+
+1. Freshly read the applicable current root and worktree `AGENTS.md`, this
+   project's workflow/routing rules and required safety documents for the next
+   bounded action. Follow current production-guidance freshness requirements
+   without switching or overwriting the active checkout. Within an active work
+   package, read each source once per unchanged snapshot and reread on change;
+   an explicit resume always requires a fresh read.
+2. Find and read the latest handoff/checkpoint for this specific goal/task and
+   exact checkout, using its identity and evidence chain rather than simply the
+   newest file modification time. Reconcile its branch, HEAD, dirty source,
+   validation actually performed and open gates with present evidence. Keep
+   historical/reported results distinct from checks actually rerun. Preserve the
+   owner, attempt counters, budgets, original assets, custody, locks,
+   deduplication and content-bound approvals; checkpoints never reset them.
+3. If the matching handoff is missing or stale, reconstruct a compact checkpoint
+   from task-local evidence. If evidence cannot be reconciled, stop only the
+   dependent actions, retain unknowns and ask the user only for information or
+   authority necessary to proceed. Continue independently actionable work within
+   its existing scope; one blocked item does not block unrelated authorized work.
+4. Update one small `resume context checked` receipt in the existing private
+   checkpoint, recording checked instruction versions, reconciled source/gates
+   and next bounded action. Update in place rather than appending repetitive
+   history. When no checkpoint exists, retain a bounded in-memory acknowledgement;
+   do not create public task notes or expose private identifiers in tracked source.
+
+Saving, reading or installing this rule is not authority to resume any goal.
+The user's actual Resume action authorizes continuing that existing goal within
+its prior scope; it grants no new provider spend, deployment, publication,
+trading or approval rights and does not override a later stop/cancellation.
+Existing due schedules and authorized recovery continue under their own standing
+authority. Do not change schedules, model configuration or hooks to implement
+this behavioral requirement.
+
+This is a mandatory agent instruction, not a claim of runtime enforcement or
+live verification. Session-start resume hooks do not establish that a hook runs
+for every goal Resume. Existing chats adopt saved rules when they next read
+instructions; there is no implied hot reload.
