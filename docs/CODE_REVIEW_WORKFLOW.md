@@ -46,6 +46,20 @@ checks; it does not select the chat model or launch paid AI work.
 
 Supported controls: [official subagent documentation](https://learn.chatgpt.com/docs/agent-configuration/subagents).
 
+Claude Code equivalents (added 2026-11-09; the Codex table above stays
+canonical and unchanged): Claude Code reads `CLAUDE.md`, which imports
+`AGENTS.md` and points to the shared SEO skill in the private sibling. The same
+stages map to machine-local user subagents in `~/.claude/agents/` (not tracked,
+like `.codex/config.toml`): `cemelatoe-pages-routine` (haiku / medium) for
+Luna / medium work and read-only inventory, `cemelatoe-pages-implementer`
+(sonnet / medium) for Sol / medium, `cemelatoe-pages-defect` (sonnet / high) for
+one bounded reproduced-defect attempt, and the read-only
+`cemelatoe-pages-safety-review` (opus / high) for Astra architecture and
+independent credential/publishing/durable-state review. The same rules apply:
+one implementation owner, at most one bounded reviewer, no recursive
+delegation, and no deployment or publishing authority from routing. Agent
+definitions load only in Claude sessions started after they are added.
+
 For website work, validate the actual site with `python scripts/validate_site_seo.py`
 and review code, public behavior and reliability before direct-to-main delivery.
 Shared Camela skill source and automation-review details remain in the private
