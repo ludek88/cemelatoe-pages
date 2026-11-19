@@ -1,6 +1,6 @@
 # Camela Toe Website Deployment
 
-Last reviewed: 2026-07-23
+Last reviewed: 2026-11-19
 
 ## Project Boundary
 
@@ -147,7 +147,10 @@ Completed on 2026-07-23:
 - the live homepage test reported that the URL is available to Google.
 
 Search Console may need time to process indexing data. Do not repeatedly submit
-unchanged URLs. Use `docs/WEBSITE_SEO_PLAN.md` for the ongoing roadmap.
+unchanged URLs. After the 2026-11-19 content update, request indexing for the
+changed canonical URLs, starting with `https://camelatoe.com/camel-toe/`, then
+the meaning guide, the leggings guide, and the homepage. Use
+`docs/WEBSITE_SEO_PLAN.md` for the ongoing roadmap.
 
 ## Public Repository Safety
 

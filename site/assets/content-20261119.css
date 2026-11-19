@@ -1,0 +1,92 @@
+/* Additions for the 2026-11-19 guide update. Loaded after content-20260723.css. */
+
+.article h2,
+.article h3,
+#construction {
+  scroll-margin-top: 88px;
+}
+
+.guide-card.wide {
+  grid-column: 1 / -1;
+}
+
+.article a.author-box,
+.article a.author-box:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.author-box {
+  display: grid;
+  grid-template-columns: 168px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  margin: 34px 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: var(--panel-soft);
+}
+
+.author-box:hover {
+  border-color: rgba(240, 115, 151, 0.62);
+}
+
+.author-box img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center 22%;
+}
+
+.author-kicker,
+.author-cta {
+  display: block;
+  color: var(--gold);
+  font-weight: 850;
+}
+
+.author-kicker {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.author-box strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.article .author-box p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.author-cta {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.side-card a {
+  display: block;
+  margin-top: 8px;
+}
+
+@media (max-width: 560px) {
+  .guide-cards,
+  .author-box {
+    grid-template-columns: 1fr;
+  }
+
+  .guide-card.wide {
+    grid-column: auto;
+  }
+
+  .author-box img {
+    max-width: 240px;
+  }
+}

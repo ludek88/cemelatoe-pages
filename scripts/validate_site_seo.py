@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 import xml.etree.ElementTree as ET
 from datetime import datetime
@@ -154,6 +155,81 @@ def structured_data_nodes(value: object):
             yield from structured_data_nodes(child)
 
 
+def is_yyyy_mm_dd(value: object) -> bool:
+    if not isinstance(value, str):
+        return False
+    try:
+        parsed = datetime.strptime(value, "%Y-%m-%d")
+    except ValueError:
+        return False
+    return parsed.strftime("%Y-%m-%d") == value
+
+
+def is_positive_int_attribute(value: str | None) -> bool:
+    return bool(value) and value.isdigit() and int(value) > 0
+
+
+def local_image_exists(src: str) -> bool:
+    parsed = urlparse(src)
+    if parsed.scheme or parsed.netloc or src.startswith("data:"):
+        return True
+    relative = Path(parsed.path)
+    if parsed.path.startswith("/"):
+        candidate = (SITE / parsed.path.lstrip("/")).resolve()
+    else:
+        candidate = (SITE / relative).resolve()
+    try:
+        candidate.relative_to(SITE.resolve())
+    except ValueError:
+        return False
+    return candidate.is_file()
+
+
+def node_types(node: dict) -> list[str]:
+    value = node.get("@type")
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, list) and all(isinstance(item, str) for item in value):
+        return value
+    return []
+
+
+def html_without_json_ld(html: str) -> str:
+    return re.sub(
+        r"<script\b[^>]*type=[\"']application/ld\+json[\"'][^>]*>.*?</script>",
+        "",
+        html,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+
+
+def faq_text_gaps(html: str) -> list[str]:
+    """Return FAQ questions or answers that are not visible outside JSON-LD."""
+    visible = html_without_json_ld(html)
+    gaps: list[str] = []
+    for match in re.finditer(
+        r"<script\b[^>]*type=[\"']application/ld\+json[\"'][^>]*>(.*?)</script>",
+        html,
+        flags=re.IGNORECASE | re.DOTALL,
+    ):
+        try:
+            structured_data = json.loads(match.group(1))
+        except json.JSONDecodeError:
+            continue
+        for node in structured_data_nodes(structured_data):
+            if "Question" not in node_types(node):
+                continue
+            name = node.get("name")
+            if isinstance(name, str) and name not in visible:
+                gaps.append(name)
+            answer = node.get("acceptedAnswer")
+            if isinstance(answer, dict):
+                text = answer.get("text")
+                if isinstance(text, str) and text not in visible:
+                    gaps.append(text)
+    return gaps
+
+
 def is_iso8601_datetime_with_timezone(value: object) -> bool:
     if not isinstance(value, str) or "T" not in value:
         return False
@@ -182,8 +258,9 @@ def validate(indexable: dict[str, Path] | None = None) -> list[str]:
             errors.append(f"{label}: missing indexable page")
             continue
 
+        html = file_path.read_text(encoding="utf-8")
         parser = PageParser()
-        parser.feed(file_path.read_text(encoding="utf-8"))
+        parser.feed(html)
         expected_url = f"{ORIGIN}{route}"
 
         if parser.lang != "en":
@@ -217,6 +294,7 @@ def validate(indexable: dict[str, Path] | None = None) -> list[str]:
             errors.append(f"{label}: page must explicitly allow indexing")
         if not parser.json_ld:
             errors.append(f"{label}: missing JSON-LD")
+        found_breadcrumb = False
         for block in parser.json_ld:
             try:
                 structured_data = json.loads(block)
@@ -224,10 +302,9 @@ def validate(indexable: dict[str, Path] | None = None) -> list[str]:
                 errors.append(f"{label}: invalid JSON-LD ({exc})")
                 continue
             for node in structured_data_nodes(structured_data):
-                node_types = node.get("@type")
-                if isinstance(node_types, str):
-                    node_types = [node_types]
-                if not isinstance(node_types, list) or "ProfilePage" not in node_types:
+                if "BreadcrumbList" in node_types(node):
+                    found_breadcrumb = True
+                if "ProfilePage" not in node_types(node):
                     continue
                 for property_name in ("dateCreated", "dateModified"):
                     if property_name in node and not is_iso8601_datetime_with_timezone(
@@ -237,14 +314,23 @@ def validate(indexable: dict[str, Path] | None = None) -> list[str]:
                             f"{label}: ProfilePage {property_name} must be an "
                             "ISO 8601 DateTime with timezone"
                         )
+        if route != "/" and not found_breadcrumb:
+            errors.append(f"{label}: indexable page needs a BreadcrumbList")
+        for gap in faq_text_gaps(html):
+            errors.append(f"{label}: FAQ text is not visible on the page: {gap}")
         for href in parser.links:
             if not local_target_exists(href):
                 errors.append(f"{label}: broken internal link {href}")
         for number, attrs in enumerate(parser.image_attrs, start=1):
             if not (attrs.get("alt") or "").strip():
                 errors.append(f"{label}: image {number} needs useful alt text")
-            if not attrs.get("width") or not attrs.get("height"):
-                errors.append(f"{label}: image {number} needs width and height")
+            if not is_positive_int_attribute(attrs.get("width")) or not is_positive_int_attribute(
+                attrs.get("height")
+            ):
+                errors.append(f"{label}: image {number} needs positive integer width and height")
+            src = attrs.get("src") or ""
+            if not src or not local_image_exists(src):
+                errors.append(f"{label}: image {number} is missing a local file ({src})")
 
     robots_path = SITE / "robots.txt"
     if not robots_path.is_file():
@@ -265,7 +351,17 @@ def validate(indexable: dict[str, Path] | None = None) -> list[str]:
         try:
             root = ET.parse(sitemap_path).getroot()
             namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
-            urls = {node.text for node in root.findall("sm:url/sm:loc", namespace)}
+            urls: set[str] = set()
+            for url_node in root.findall("sm:url", namespace):
+                loc = url_node.find("sm:loc", namespace)
+                lastmod = url_node.find("sm:lastmod", namespace)
+                loc_text = (loc.text or "").strip() if loc is not None else ""
+                lastmod_text = (lastmod.text or "").strip() if lastmod is not None else ""
+                urls.add(loc_text)
+                if not is_yyyy_mm_dd(lastmod_text):
+                    errors.append(
+                        f"site/sitemap.xml: {loc_text or 'a URL'} needs a YYYY-MM-DD lastmod"
+                    )
             expected = {f"{ORIGIN}{route}" for route in indexable}
             if urls != expected:
                 errors.append(f"site/sitemap.xml: expected exactly {sorted(expected)}, found {sorted(urls)}")

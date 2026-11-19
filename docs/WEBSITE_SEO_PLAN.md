@@ -1,6 +1,6 @@
 # Camela Toe SEO Goal and Operating Plan
 
-Last updated: 2026-07-25
+Last updated: 2026-11-19
 
 ## North-star goal
 
@@ -20,6 +20,11 @@ practical sequence is:
 
 No ranking is guaranteed. Success depends on indexing, usefulness, authority,
 competition, and continued editorial work—not a one-time technical score.
+
+Owner target recorded on 2026-11-19, still without a ranking promise: by
+2027-02-20, 50 or more Google clicks in a month, every canonical page indexed,
+and a top-10 result for `camel toe meaning`. Treat that as the scoreboard for
+later reviews. It is not evidence that a content change will produce it.
 
 ## Implemented foundation
 
@@ -74,6 +79,55 @@ hosting migration. The initial setup was completed on 2026-07-23:
      Cloudflare's injected analytics beacon.
    - Record Search Console queries, pages, countries, clicks, and impressions
      monthly. Cloudflare request counts are not a substitute for search data.
+
+## November 19, 2026 indexing and snippet pass
+
+Search Console for the 28 days ending 2026-10-21 showed 3 clicks, 212
+impressions, a 1.4% click-through rate, and an average position of 43. The
+meaning guide accounted for 166 impressions on “camel toe meaning” style
+queries. The homepage and leggings guide were indexed. `/camel-toe/` had been
+“Discovered – currently not indexed” since 2026-07-25 and had not been crawled,
+even though it was in the sitemap and a live test said it could be indexed.
+
+What changed, and why:
+
+- The hub at `/camel-toe/` is now the clothing overview: garment differences,
+  a swimwear section (lining, one-piece torso length, and wet fabric), and a
+  chooser that points to the definition, the leggings guide, and Camela’s
+  profile. It was already a real article, but it overlapped the meaning page
+  and its description promised swimwear the body did not cover. The visible
+  FAQ now matches the FAQ structured data. `lastmod` and `dateModified` are
+  2026-11-19.
+- `/camel-toe/meaning/` now leads the title and meta description with the
+  query and the definition, which is the page earning those impressions.
+  Dictionary dates were rechecked the same day against Merriam-Webster (1988,
+  resemblance to a camel’s split toes), Dictionary.com (written record
+  1995–2000 for the one-word form), and Cambridge. An author box links to
+  `/#about`. No ranking outcome is claimed for the new title.
+- `/camel-toe/leggings/` adds a compressed WebP diagram of a center-front seam
+  beside a gusset / smoother front, and states that a gusset and a seamless
+  front are different patterns. The FAQ text is visible on the page.
+- The homepage links to all three guides from the navigation, the about note,
+  a new guides section, and the footer, so the unindexed hub is not only a
+  sitemap URL. Homepage `lastmod` had stayed at 2026-08-29 after later edits;
+  it is now 2026-11-19, the date of this content change.
+- No new URL was added. The plan says to improve a page Google has not indexed
+  before creating more pages, and the only query cluster with real impressions
+  already has a page. Swimwear and “how to avoid it” are covered on the hub
+  and the leggings guide instead of a fourth article that would compete for
+  the same small crawl.
+- `camela-author.webp` is the author portrait on the three guides, including
+  `ImageObject` author data. The guides keep the existing social preview
+  images. Both new files are WebP and well under 80 KB. New guide styles live
+  in `content-20261119.css`, loaded after the existing stylesheet, because
+  `/assets/*` is cached as immutable.
+- The validator now requires a `YYYY-MM-DD` sitemap `lastmod`, a
+  `BreadcrumbList` on every indexable page except the homepage, visible FAQ
+  text that matches FAQ structured data, and real local image files with
+  integer dimensions.
+
+After deployment, request indexing in Search Console for the changed URLs,
+hub first. Do not resubmit a URL that has not changed again.
 
 ## Editorial roadmap
 

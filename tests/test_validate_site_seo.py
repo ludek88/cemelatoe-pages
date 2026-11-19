@@ -57,6 +57,41 @@ class DiscoverIndexablePagesTest(unittest.TestCase):
                 MODULE.SITE = original_site
 
 
+class SitemapAndContentContractTest(unittest.TestCase):
+    def test_accepts_exact_sitemap_dates_only(self) -> None:
+        self.assertTrue(MODULE.is_yyyy_mm_dd("2026-11-19"))
+        self.assertFalse(MODULE.is_yyyy_mm_dd("2026-11-19T00:00:00Z"))
+        self.assertFalse(MODULE.is_yyyy_mm_dd("2026-13-40"))
+        self.assertFalse(MODULE.is_yyyy_mm_dd("19 Nov 2026"))
+
+    def test_faq_answers_must_be_visible_outside_json_ld(self) -> None:
+        html = """
+        <script type="application/ld+json">
+        {"@type":"FAQPage","mainEntity":[
+          {"@type":"Question","name":"What does camel toe mean?","acceptedAnswer":{"@type":"Answer","text":"A visible clothing outline."}}
+        ]}
+        </script>
+        <h3>What does camel toe mean?</h3>
+        <p>A visible clothing outline.</p>
+        """
+        self.assertEqual(MODULE.faq_text_gaps(html), [])
+
+        hidden = html.replace("<p>A visible clothing outline.</p>", "<p>Something else.</p>")
+        self.assertIn("A visible clothing outline.", MODULE.faq_text_gaps(hidden))
+
+    def test_editorial_images_stay_compact(self) -> None:
+        assets = Path(__file__).resolve().parents[1] / "site" / "assets"
+        limits = {
+            "leggings-construction.webp": 80_000,
+            "camela-author.webp": 80_000,
+        }
+        for name, limit in limits.items():
+            path = assets / name
+            self.assertTrue(path.is_file(), name)
+            self.assertLess(path.stat().st_size, limit, name)
+            self.assertTrue(path.read_bytes().startswith(b"RIFF"), name)
+
+
 class StructuredDataDateTimeTest(unittest.TestCase):
     def test_accepts_iso8601_datetime_with_offset(self) -> None:
         self.assertTrue(

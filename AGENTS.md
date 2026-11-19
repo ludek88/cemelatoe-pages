@@ -91,6 +91,11 @@ Shared Camela skills remain owned by the private sibling.
   `www.camelatoe.pl` are redirect-only aliases.
 - Keep the `pages.dev` mirror out of search results.
 - Validate with `python3 scripts/validate_site_seo.py` before deployment.
+- As of 2026-11-19, `/camel-toe/` is the clothing overview, including swimwear;
+  `/camel-toe/meaning/` answers the definition query; `/camel-toe/leggings/`
+  owns seam and gusset detail. Do not add another URL in this cluster until
+  the hub is indexed. The reason and the 2027-02-20 owner targets are in
+  `docs/WEBSITE_SEO_PLAN.md`.
 - Recurring SEO editorial work is orchestrated from the private sibling
   repository. After the website diff passes validation and safety review,
   commit it directly to local `main` and push `origin main` without

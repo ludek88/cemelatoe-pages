@@ -38,7 +38,7 @@
             "url": "https://camelatoe.com/",
             "name": "Camela Toe | Body-Positive Fashion and Creator Content",
             "dateCreated": "2026-07-05T15:45:21+02:00",
-            "dateModified": "2026-10-03T09:04:00+02:00",
+            "dateModified": "2026-11-19T23:45:00+01:00",
             "isPartOf": {
               "@id": "https://camelatoe.com/#website"
             },
@@ -79,6 +79,12 @@
 
       html {
         scroll-behavior: smooth;
+      }
+
+      #about,
+      #guides,
+      #follow {
+        scroll-margin-top: 84px;
       }
 
       body {
@@ -349,6 +355,21 @@
         margin-bottom: 28px;
       }
 
+      .guide-picks {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      a.fact {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a.fact:hover {
+        border-color: rgba(240, 115, 151, 0.7);
+      }
+
       .gallery-head p {
         max-width: 480px;
       }
@@ -456,7 +477,8 @@
           margin-top: 0;
         }
 
-        .facts {
+        .facts,
+        .guide-picks {
           grid-template-columns: 1fr;
         }
 
@@ -536,7 +558,7 @@
             <p class="note">
               The name Camela Toe is a playful, body-positive spin on the
               fashion phrase “camel toe.” Looking for the meaning rather than
-              the model? Start with
+              the creator? Start with
               <a class="inline-link" href="/camel-toe/meaning/">what camel toe means</a>,
               explore the <a class="inline-link" href="/camel-toe/">complete body-positive fashion guide</a>,
               or compare <a class="inline-link" href="/camel-toe/leggings/">leggings seams, gussets, rise, and fit</a>.
@@ -545,6 +567,36 @@
           <div class="portrait-grid" aria-label="Camela preview images">
             <img src="./assets/camela-yoga.jpg" alt="Camela posing in a fitted yoga set" width="675" height="1200" loading="lazy" decoding="async">
             <img src="./assets/camela-home.jpg" alt="Camela relaxing in a sunny apartment" width="675" height="1200" loading="lazy" decoding="async">
+          </div>
+        </div>
+      </section>
+
+      <section id="guides">
+        <div class="wrap">
+          <div class="gallery-head">
+            <div>
+              <div class="eyebrow">Fashion guides</div>
+              <h2 class="section-title">The phrase, the clothes, the fit.</h2>
+            </div>
+            <p class="body-copy">
+              Plain-language guides from Camela Toe: what the clothing phrase
+              means, how leggings and swimwear are cut, and what to compare
+              when you want a different fit.
+            </p>
+          </div>
+          <div class="guide-picks">
+            <a class="fact" href="/camel-toe/">
+              <b>Overview</b>
+              <span>Camel toe guide: causes, swimwear, jeans, and what to try next.</span>
+            </a>
+            <a class="fact" href="/camel-toe/meaning/">
+              <b>Definition</b>
+              <span>Camel toe meaning, in plain language, with dictionary sources.</span>
+            </a>
+            <a class="fact" href="/camel-toe/leggings/">
+              <b>Leggings</b>
+              <span>Front seams, gussets, rise, and a fitting-room movement check.</span>
+            </a>
           </div>
         </div>
       </section>
