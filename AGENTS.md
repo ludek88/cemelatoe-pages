@@ -90,6 +90,7 @@ Shared Camela skills remain owned by the private sibling.
 - Keep `camelatoe.com` canonical. `www.camelatoe.com`, `camelatoe.pl`, and
   `www.camelatoe.pl` are redirect-only aliases.
 - Keep the `pages.dev` mirror out of search results.
+- The homepage Facebook button intentionally points to the Kamila Palec profile via ID 558918060640371 (`https://www.facebook.com/558918060640371`) per the owner (Nov 19, 2026) and must not be changed to the Page.
 - Validate with `python3 scripts/validate_site_seo.py` before deployment.
 - As of 2026-11-19, `/camel-toe/` is the clothing overview, including swimwear;
   `/camel-toe/meaning/` answers the definition query; `/camel-toe/leggings/`
