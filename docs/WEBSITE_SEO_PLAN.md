@@ -1,6 +1,6 @@
 # Camela Toe SEO Goal and Operating Plan
 
-Last updated: 2026-11-19
+Last updated: 2026-11-21
 
 ## North-star goal
 
@@ -128,6 +128,55 @@ What changed, and why:
 
 After deployment, request indexing in Search Console for the changed URLs,
 hub first. Do not resubmit a URL that has not changed again.
+
+## November 21, 2026 definition page
+
+Search Console for the 28 days ending November 19, 2026 (October 23–November 19)
+showed 0 clicks, 254 impressions, and an average position of 42.8. All four
+canonical URLs were indexed. `/camel-toe/` was crawled on November 19 after
+the previous guide update. The demand is still almost entirely definitional,
+and the meaning page ranks poorly: 211 impressions at an average position of
+50.5. Query rows included “camel toe meaning” (26 impressions, position 71),
+“camel toe definition” (25, position 83), “what is a camel toe” (11, position
+83), “what is camel toe” (10, position 79), “what is cameltoe” (6, position
+79), “camel toe” (5, position 77), “what does cameltoe mean” (3, position 57),
+“camel toe slang” (3, position 70), “what are cameltoes” (3, position 74), and
+“what is a cameltoe” (3, position 77). Brand misspellings already rank well
+and still have 0 clicks, including “camila toe” at 3.8, “cameotoe” at 7.4,
+“camellto” at 8, “camilla toe” at 4, and “camela toe” at 10. The homepage had
+42 impressions at position 4.6.
+
+What changed, and why:
+
+- `/camel-toe/meaning/` now opens with a direct definition of about fifty
+  words, then answers the slang use, the sourced name history, respectful
+  wording, why the outline happens, and what a wearer can compare if they want
+  to change it. The clothing sections stay short and link to `/camel-toe/` and
+  `/camel-toe/leggings/` so this page does not replace those guides. The title,
+  canonical URL, and meta description from November 19 are unchanged, so that
+  snippet test can still be measured. `dateModified` and sitemap `lastmod` are
+  2026-11-21.
+- Dictionary wording was checked again on November 21, 2026 against
+  Merriam-Webster (informal; 1988; resemblance to a camel’s two split toes;
+  entry last updated February 24, 2026), Dictionary.com (slang headword
+  cameltoe; written record 1995–2000; resemblance to a camel’s foot), and
+  Cambridge (informal; tight trousers or underwear; a catsuit example). The
+  citations now follow those entries more closely, including the dictionaries’
+  references to women’s clothing. Spelling variants are stated once. No new
+  etymology was added.
+- The visible FAQ uses question forms from the query list: what a camel toe
+  is, whether it is slang, why it is called that, whether saying it is rude,
+  why it happens, and how to avoid it. FAQPage and DefinedTerm JSON-LD repeat
+  visible sentences exactly. BreadcrumbList was already present.
+- The homepage and the hub link to the meaning page with descriptive anchors.
+  The homepage meta description now leads with Camela Toe’s name and the
+  body-positive mission, for people who searched the brand. The homepage title
+  is unchanged. No new URL was added: the indexed hub still should not gain a
+  competing article while the definition page is where the impressions are.
+
+This update does not promise a ranking or a click-through change. After
+deployment, request indexing for the meaning page, the hub, and the homepage.
+Do not resubmit `/camel-toe/leggings/`, which did not change.
 
 ## Editorial roadmap
 

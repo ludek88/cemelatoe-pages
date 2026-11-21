@@ -92,11 +92,14 @@ Shared Camela skills remain owned by the private sibling.
 - Keep the `pages.dev` mirror out of search results.
 - The homepage Facebook button intentionally points to the Kamila Palec profile via ID 558918060640371 (`https://www.facebook.com/558918060640371`) per the owner (Nov 19, 2026) and must not be changed to the Page.
 - Validate with `python3 scripts/validate_site_seo.py` before deployment.
-- As of 2026-11-19, `/camel-toe/` is the clothing overview, including swimwear;
+- As of 2026-11-21, `/camel-toe/` is the clothing overview, including swimwear;
   `/camel-toe/meaning/` answers the definition query; `/camel-toe/leggings/`
-  owns seam and gusset detail. Do not add another URL in this cluster until
-  the hub is indexed. The reason and the 2027-02-20 owner targets are in
-  `docs/WEBSITE_SEO_PLAN.md`.
+  owns seam and gusset detail. Search Console for October 23–November 19 showed
+  all four canonical URLs indexed and 211 impressions on the meaning page at an
+  average position of 50.5, so that page was rewritten in place. Do not add
+  another URL in this cluster until a later review shows the definition page
+  is no longer the first page to improve. The 2027-02-20 owner targets are in
+  `docs/WEBSITE_SEO_PLAN.md` and are not a ranking promise.
 - Recurring SEO editorial work is orchestrated from the private sibling
   repository. After the website diff passes validation and safety review,
   commit it directly to local `main` and push `origin main` without
