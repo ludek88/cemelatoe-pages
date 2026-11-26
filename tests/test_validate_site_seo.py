@@ -79,6 +79,62 @@ class SitemapAndContentContractTest(unittest.TestCase):
         hidden = html.replace("<p>A visible clothing outline.</p>", "<p>Something else.</p>")
         self.assertIn("A visible clothing outline.", MODULE.faq_text_gaps(hidden))
 
+    def test_social_dimensions_follow_each_image_file(self) -> None:
+        assets = Path(__file__).resolve().parents[1] / "site" / "assets"
+        social_card = assets / "camela-social-card.png"
+        leggings = assets / "leggings-construction-flatlay.jpg"
+        hero_webp = assets / "camela-hero.webp"
+        self.assertEqual(MODULE.image_pixel_size(social_card), (1200, 630))
+        self.assertEqual(MODULE.image_pixel_size(leggings), (1200, 670))
+        self.assertEqual(
+            MODULE.image_pixel_size(hero_webp),
+            MODULE.image_pixel_size(assets / "camela-hero.jpg"),
+        )
+        self.assertEqual(
+            MODULE.social_dimension_errors(
+                "site/camel-toe/leggings/index.html",
+                "og:image",
+                "https://camelatoe.com/assets/leggings-construction-flatlay.jpg",
+                "1200",
+                "670",
+            ),
+            [],
+        )
+        mismatch = MODULE.social_dimension_errors(
+            "site/camel-toe/leggings/index.html",
+            "og:image",
+            "https://camelatoe.com/assets/leggings-construction-flatlay.jpg",
+            "1200",
+            "630",
+        )
+        self.assertEqual(len(mismatch), 1)
+        self.assertIn("1200x670", mismatch[0])
+
+    def test_homepage_photos_keep_a_smaller_webp_sibling(self) -> None:
+        assets = Path(__file__).resolve().parents[1] / "site" / "assets"
+        names = (
+            "camela-hero",
+            "camela-yoga",
+            "camela-home",
+            "camela-bedroom-knit",
+            "camela-balcony",
+            "camela-bedroom",
+        )
+        webp_total = 0
+        for name in names:
+            jpeg = assets / f"{name}.jpg"
+            webp = assets / f"{name}.webp"
+            self.assertTrue(jpeg.is_file(), name)
+            self.assertTrue(webp.is_file(), name)
+            self.assertLess(webp.stat().st_size, jpeg.stat().st_size, name)
+            self.assertEqual(MODULE.image_pixel_size(webp), MODULE.image_pixel_size(jpeg), name)
+            self.assertTrue(webp.read_bytes().startswith(b"RIFF"), name)
+            webp_total += webp.stat().st_size
+        self.assertLess(webp_total, 450_000)
+        social_card = assets / "camela-social-card.png"
+        self.assertLess(social_card.stat().st_size, 200_000)
+        self.assertEqual(MODULE.image_pixel_size(social_card), (1200, 630))
+
     def test_editorial_images_stay_compact(self) -> None:
         assets = Path(__file__).resolve().parents[1] / "site" / "assets"
         limits = {

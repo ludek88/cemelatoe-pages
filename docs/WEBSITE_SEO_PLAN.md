@@ -1,6 +1,6 @@
 # Camela Toe SEO Goal and Operating Plan
 
-Last updated: 2026-11-21
+Last updated: 2026-11-26
 
 ## North-star goal
 
@@ -38,12 +38,13 @@ later reviews. It is not evidence that a content change will produce it.
 - A real crawler-readable `robots.txt` and XML sitemap.
 - A real `404.html`, preventing unknown URLs from returning homepage content.
 - `noindex` on legal utility pages and the `camela-toe.pages.dev` mirror.
-- `WebSite`, `ProfilePage`, `Organization`, `Article`, `BreadcrumbList`, and
-  appropriate FAQ structured data.
+- `WebSite`, `ProfilePage` (homepage `mainEntity` is a `Person`), `Organization`,
+  `Article`, `BreadcrumbList`, and appropriate FAQ structured data.
 - A topic hub plus two independently useful supporting guides.
 - Descriptive internal links between the creator profile, topic hub, definition,
   and leggings guide.
-- A 1200×630 social-sharing image.
+- A 1200×630 social-sharing image. Other pages may use a different preview
+  size; declared Open Graph dimensions are checked against that file.
 - `scripts/validate_site_seo.py` enforced by the website deployment workflow.
 
 ## Immediate external setup
@@ -177,6 +178,42 @@ What changed, and why:
 This update does not promise a ranking or a click-through change. After
 deployment, request indexing for the meaning page, the hub, and the homepage.
 Do not resubmit `/camel-toe/leggings/`, which did not change.
+
+## November 26, 2026 homepage performance and profile schema
+
+No new URL, and no guide title or meta description changed. This pass only
+reduces homepage transfer size and makes the profile entity match the official
+links already on the page.
+
+What changed, and why:
+
+- `camela-social-card.png` stays a 1200×630 PNG and went from 501,472 bytes to
+  130,731 bytes (`pngquant --quality=90-100 --speed 1 --strip`). The homepage
+  now declares `og:image:width`, `og:image:height`, `twitter:image:width`, and
+  `twitter:image:height` as 1200 and 630.
+- The six homepage JPEGs (hero, yoga, home, bedroom knit, balcony, and bedroom)
+  stay in place. Matching WebP files, encoded with `cwebp -q 82 -m 6`, total
+  374,740 bytes, down from 824,550 bytes of JPEG. Content images use `<picture>` with a WebP source and the
+  JPEG fallback, and keep their width, height, and `loading="lazy"`. The hero
+  and the exclusive section use CSS `image-set()` for WebP with the JPEG
+  declaration left in place for browsers that drop `image-set()`. The hero
+  WebP is preloaded and is not lazy, because it is the largest contentful
+  paint image.
+- Homepage `ProfilePage.mainEntity` is a `Person` named Camela Toe. `sameAs`
+  lists only the official profiles already linked on the page: Instagram
+  `https://www.instagram.com/cemelatoe/`, Facebook
+  `https://www.facebook.com/558918060640371`, Fanvue
+  `https://www.fanvue.com/camela_toe`, and Telegram `https://t.me/camela_toe`.
+  The description stays the existing creator-project wording. `dateModified`
+  is 2026-11-26.
+- Sitemap `lastmod` for `https://camelatoe.com/` is 2026-11-26. The three
+  guide `lastmod` values are unchanged.
+- The validator compares declared Open Graph width and height with the image
+  file. `/camel-toe/leggings/` keeps its own 1200×670 preview, so the check
+  does not assume every social image is 1200×630.
+
+This does not promise a ranking or Core Web Vitals change. After deployment,
+request indexing for the homepage only. Do not resubmit the three guides.
 
 ## Editorial roadmap
 

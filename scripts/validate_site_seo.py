@@ -34,8 +34,14 @@ class PageParser(HTMLParser):
         self.canonicals: list[str] = []
         self.og_urls: list[str] = []
         self.og_images: list[str] = []
+        self.og_image_widths: list[str] = []
+        self.og_image_heights: list[str] = []
+        self.twitter_images: list[str] = []
+        self.twitter_image_widths: list[str] = []
+        self.twitter_image_heights: list[str] = []
         self.links: list[str] = []
         self.image_attrs: list[dict[str, str | None]] = []
+        self.source_srcsets: list[str] = []
         self.json_ld: list[str] = []
         self.lang: str | None = None
         self._in_title = False
@@ -62,6 +68,17 @@ class PageParser(HTMLParser):
                 self.og_urls.append(content.strip())
             elif prop == "og:image":
                 self.og_images.append(content.strip())
+            elif prop == "og:image:width":
+                self.og_image_widths.append(content.strip())
+            elif prop == "og:image:height":
+                self.og_image_heights.append(content.strip())
+            social_name = prop or name
+            if social_name == "twitter:image":
+                self.twitter_images.append(content.strip())
+            elif social_name == "twitter:image:width":
+                self.twitter_image_widths.append(content.strip())
+            elif social_name == "twitter:image:height":
+                self.twitter_image_heights.append(content.strip())
         elif tag == "link" and (values.get("rel") or "").lower() == "canonical":
             self.canonicals.append((values.get("href") or "").strip())
         elif tag == "a":
@@ -70,6 +87,10 @@ class PageParser(HTMLParser):
                 self.links.append(href)
         elif tag == "img":
             self.image_attrs.append(values)
+        elif tag == "source":
+            srcset = (values.get("srcset") or "").strip()
+            if srcset:
+                self.source_srcsets.append(srcset)
         elif tag == "script" and (values.get("type") or "").lower() == "application/ld+json":
             self._in_json_ld = True
             self._json_parts = []
@@ -167,6 +188,113 @@ def is_yyyy_mm_dd(value: object) -> bool:
 
 def is_positive_int_attribute(value: str | None) -> bool:
     return bool(value) and value.isdigit() and int(value) > 0
+
+
+def image_pixel_size(path: Path) -> tuple[int, int] | None:
+    """Return width and height from a PNG, JPEG, or WebP file header."""
+    try:
+        data = path.read_bytes()
+    except OSError:
+        return None
+    if data.startswith(b"\x89PNG\r\n\x1a\n") and len(data) >= 24 and data[12:16] == b"IHDR":
+        return int.from_bytes(data[16:20], "big"), int.from_bytes(data[20:24], "big")
+    if data.startswith(b"\xff\xd8"):
+        return _jpeg_pixel_size(data)
+    if len(data) >= 12 and data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+        return _webp_pixel_size(data)
+    return None
+
+
+def _jpeg_pixel_size(data: bytes) -> tuple[int, int] | None:
+    sof_markers = {
+        0xC0, 0xC1, 0xC2, 0xC3,
+        0xC5, 0xC6, 0xC7,
+        0xC9, 0xCA, 0xCB,
+        0xCD, 0xCE, 0xCF,
+    }
+    index = 2
+    while index + 1 < len(data):
+        if data[index] != 0xFF:
+            return None
+        index += 1
+        while index < len(data) and data[index] == 0xFF:
+            index += 1
+        if index >= len(data):
+            return None
+        marker = data[index]
+        index += 1
+        if marker in {0xD8, 0xD9} or 0xD0 <= marker <= 0xD7:
+            continue
+        if index + 2 > len(data):
+            return None
+        segment_length = int.from_bytes(data[index:index + 2], "big")
+        if segment_length < 2 or index + segment_length > len(data):
+            return None
+        if marker in sof_markers:
+            if segment_length < 7:
+                return None
+            height = int.from_bytes(data[index + 3:index + 5], "big")
+            width = int.from_bytes(data[index + 5:index + 7], "big")
+            if width > 0 and height > 0:
+                return width, height
+            return None
+        index += segment_length
+    return None
+
+
+def _webp_pixel_size(data: bytes) -> tuple[int, int] | None:
+    if len(data) < 30:
+        return None
+    chunk = data[12:16]
+    if chunk == b"VP8X":
+        width = 1 + int.from_bytes(data[24:27], "little")
+        height = 1 + int.from_bytes(data[27:30], "little")
+    elif chunk == b"VP8 ":
+        width = int.from_bytes(data[26:28], "little") & 0x3FFF
+        height = int.from_bytes(data[28:30], "little") & 0x3FFF
+    elif chunk == b"VP8L" and data[20] == 0x2F:
+        bits = int.from_bytes(data[21:25], "little")
+        width = (bits & 0x3FFF) + 1
+        height = ((bits >> 14) & 0x3FFF) + 1
+    else:
+        return None
+    if width > 0 and height > 0:
+        return width, height
+    return None
+
+
+def srcset_urls(srcset: str) -> list[str]:
+    urls: list[str] = []
+    for candidate in srcset.split(","):
+        parts = candidate.strip().split()
+        if parts:
+            urls.append(parts[0])
+    return urls
+
+
+def social_dimension_errors(
+    label: str,
+    kind: str,
+    image_url: str,
+    width: str | None,
+    height: str | None,
+) -> list[str]:
+    """Compare declared social-image dimensions with the file itself."""
+    if not is_positive_int_attribute(width) or not is_positive_int_attribute(height):
+        return [f"{label}: {kind} needs positive integer width and height"]
+    if not canonical_image_exists(image_url):
+        return [f"{label}: {kind} file is missing ({image_url})"]
+    path = SITE / urlparse(image_url).path.lstrip("/")
+    actual = image_pixel_size(path)
+    if actual is None:
+        return [f"{label}: could not read pixel size of {path.relative_to(ROOT)}"]
+    declared = (int(width or "0"), int(height or "0"))
+    if declared != actual:
+        return [
+            f"{label}: {kind} declares {declared[0]}x{declared[1]} "
+            f"but {path.relative_to(ROOT)} is {actual[0]}x{actual[1]}"
+        ]
+    return []
 
 
 def local_image_exists(src: str) -> bool:
@@ -289,6 +417,35 @@ def validate(indexable: dict[str, Path] | None = None) -> list[str]:
             errors.append(f"{label}: og:url must be exactly {expected_url}")
         if len(parser.og_images) != 1 or not canonical_image_exists(parser.og_images[0]):
             errors.append(f"{label}: needs one existing first-party social preview image")
+        elif len(parser.og_image_widths) != 1 or len(parser.og_image_heights) != 1:
+            errors.append(f"{label}: og:image needs one width and one height")
+        else:
+            errors.extend(
+                social_dimension_errors(
+                    str(label),
+                    "og:image",
+                    parser.og_images[0],
+                    parser.og_image_widths[0],
+                    parser.og_image_heights[0],
+                )
+            )
+        if parser.twitter_image_widths or parser.twitter_image_heights:
+            if (
+                len(parser.twitter_images) != 1
+                or len(parser.twitter_image_widths) != 1
+                or len(parser.twitter_image_heights) != 1
+            ):
+                errors.append(f"{label}: twitter:image needs one image, width, and height")
+            else:
+                errors.extend(
+                    social_dimension_errors(
+                        str(label),
+                        "twitter:image",
+                        parser.twitter_images[0],
+                        parser.twitter_image_widths[0],
+                        parser.twitter_image_heights[0],
+                    )
+                )
         tokens = robots_tokens(parser)
         if "index" not in tokens or "noindex" in tokens:
             errors.append(f"{label}: page must explicitly allow indexing")
@@ -331,6 +488,10 @@ def validate(indexable: dict[str, Path] | None = None) -> list[str]:
             src = attrs.get("src") or ""
             if not src or not local_image_exists(src):
                 errors.append(f"{label}: image {number} is missing a local file ({src})")
+        for srcset in parser.source_srcsets:
+            for url in srcset_urls(srcset):
+                if not local_image_exists(url):
+                    errors.append(f"{label}: image source is missing a local file ({url})")
 
     robots_path = SITE / "robots.txt"
     if not robots_path.is_file():

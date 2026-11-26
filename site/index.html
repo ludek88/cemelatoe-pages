@@ -9,6 +9,8 @@
     <meta property="og:title" content="Camela Toe | Body-Positive Fashion and Creator Content">
     <meta property="og:description" content="Meet Camela Toe, explore her public glamour work, body-positive fashion guides, and creator updates.">
     <meta property="og:image" content="https://camelatoe.com/assets/camela-social-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://camelatoe.com/">
     <meta property="og:site_name" content="Camela Toe">
@@ -16,6 +18,9 @@
     <meta name="twitter:title" content="Camela Toe | Body-Positive Fashion and Creator Content">
     <meta name="twitter:description" content="Public glamour, creator updates, and body-positive fashion guides from Camela Toe.">
     <meta name="twitter:image" content="https://camelatoe.com/assets/camela-social-card.png">
+    <meta name="twitter:image:width" content="1200">
+    <meta name="twitter:image:height" content="630">
+    <link rel="preload" as="image" href="./assets/camela-hero.webp" type="image/webp" fetchpriority="high">
     <link rel="canonical" href="https://camelatoe.com/">
     <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
     <link rel="apple-touch-icon" href="./assets/favicon-180.png">
@@ -38,12 +43,12 @@
             "url": "https://camelatoe.com/",
             "name": "Camela Toe | Body-Positive Fashion and Creator Content",
             "dateCreated": "2026-07-05T15:45:21+02:00",
-            "dateModified": "2026-11-21T09:00:00+01:00",
+            "dateModified": "2026-11-26T22:00:00+01:00",
             "isPartOf": {
               "@id": "https://camelatoe.com/#website"
             },
             "mainEntity": {
-              "@type": "Organization",
+              "@type": "Person",
               "@id": "https://camelatoe.com/#camela",
               "name": "Camela Toe",
               "description": "A body-positive creator project promoting full-body acceptance, natural confidence, and personal freedom through glamour, fitness, and fashion content.",
@@ -51,6 +56,7 @@
               "url": "https://camelatoe.com/",
               "sameAs": [
                 "https://www.instagram.com/cemelatoe/",
+                "https://www.facebook.com/558918060640371",
                 "https://www.fanvue.com/camela_toe",
                 "https://t.me/camela_toe"
               ]
@@ -104,6 +110,14 @@
         display: block;
         max-width: 100%;
         height: auto;
+      }
+
+      picture {
+        display: block;
+      }
+
+      picture img {
+        width: 100%;
       }
 
       .nav {
@@ -169,6 +183,14 @@
           linear-gradient(90deg, rgba(22, 13, 18, 0.92) 0%, rgba(22, 13, 18, 0.66) 44%, rgba(22, 13, 18, 0.2) 100%),
           linear-gradient(0deg, rgba(22, 13, 18, 1) 0%, rgba(22, 13, 18, 0.1) 38%),
           url("./assets/camela-hero.jpg");
+        /* JPEG stays in effect when a browser drops image-set(). */
+        background-image:
+          linear-gradient(90deg, rgba(22, 13, 18, 0.92) 0%, rgba(22, 13, 18, 0.66) 44%, rgba(22, 13, 18, 0.2) 100%),
+          linear-gradient(0deg, rgba(22, 13, 18, 1) 0%, rgba(22, 13, 18, 0.1) 38%),
+          image-set(
+            url("./assets/camela-hero.webp") type("image/webp"),
+            url("./assets/camela-hero.jpg") type("image/jpeg")
+          );
         background-size: cover;
         background-position: center 24%;
       }
@@ -312,11 +334,11 @@
         box-shadow: 0 18px 44px var(--shadow);
       }
 
-      .portrait-grid img:first-child {
+      .portrait-grid picture:first-child {
         aspect-ratio: 3 / 4;
       }
 
-      .portrait-grid img:last-child {
+      .portrait-grid picture:last-child {
         aspect-ratio: 4 / 5;
         margin-top: 52px;
       }
@@ -380,16 +402,16 @@
         gap: 14px;
       }
 
-      .gallery img:nth-child(1) {
+      .gallery picture:nth-child(1) {
         aspect-ratio: 4 / 5;
       }
 
-      .gallery img:nth-child(2) {
+      .gallery picture:nth-child(2) {
         aspect-ratio: 1 / 1.3;
         margin-top: 54px;
       }
 
-      .gallery img:nth-child(3) {
+      .gallery picture:nth-child(3) {
         aspect-ratio: 4 / 5;
         margin-top: 18px;
       }
@@ -402,6 +424,13 @@
         background-image:
           linear-gradient(90deg, rgba(22, 13, 18, 0.92), rgba(22, 13, 18, 0.58), rgba(22, 13, 18, 0.82)),
           url("./assets/camela-balcony.jpg");
+        /* JPEG stays in effect when a browser drops image-set(). */
+        background-image:
+          linear-gradient(90deg, rgba(22, 13, 18, 0.92), rgba(22, 13, 18, 0.58), rgba(22, 13, 18, 0.82)),
+          image-set(
+            url("./assets/camela-balcony.webp") type("image/webp"),
+            url("./assets/camela-balcony.jpg") type("image/jpeg")
+          );
         background-size: cover;
         background-position: center 42%;
       }
@@ -471,9 +500,9 @@
           grid-template-columns: 1fr 1fr;
         }
 
-        .portrait-grid img:last-child,
-        .gallery img:nth-child(2),
-        .gallery img:nth-child(3) {
+        .portrait-grid picture:last-child,
+        .gallery picture:nth-child(2),
+        .gallery picture:nth-child(3) {
           margin-top: 0;
         }
 
@@ -565,8 +594,14 @@
             </p>
           </div>
           <div class="portrait-grid" aria-label="Camela preview images">
-            <img src="./assets/camela-yoga.jpg" alt="Camela posing in a fitted yoga set" width="675" height="1200" loading="lazy" decoding="async">
-            <img src="./assets/camela-home.jpg" alt="Camela relaxing in a sunny apartment" width="675" height="1200" loading="lazy" decoding="async">
+            <picture>
+              <source srcset="./assets/camela-yoga.webp" type="image/webp">
+              <img src="./assets/camela-yoga.jpg" alt="Camela posing in a fitted yoga set" width="675" height="1200" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source srcset="./assets/camela-home.webp" type="image/webp">
+              <img src="./assets/camela-home.jpg" alt="Camela relaxing in a sunny apartment" width="675" height="1200" loading="lazy" decoding="async">
+            </picture>
           </div>
         </div>
       </section>
@@ -625,7 +660,10 @@
               content.
             </p>
           </div>
-          <img src="./assets/camela-bedroom-knit.jpg" alt="Camela in a soft bedroom glamour portrait" width="1024" height="1024" loading="lazy" decoding="async">
+          <picture>
+            <source srcset="./assets/camela-bedroom-knit.webp" type="image/webp">
+            <img src="./assets/camela-bedroom-knit.jpg" alt="Camela in a soft bedroom glamour portrait" width="1024" height="1024" loading="lazy" decoding="async">
+          </picture>
         </div>
       </section>
 
@@ -642,9 +680,18 @@
             </p>
           </div>
           <div class="gallery" aria-label="Camela gallery preview">
-            <img src="./assets/camela-balcony.jpg" alt="Camela in a black evening dress on a night balcony" width="675" height="1200" loading="lazy" decoding="async">
-            <img src="./assets/camela-bedroom.jpg" alt="Camela wrapped in white sheets in soft hotel light" width="1024" height="1024" loading="lazy" decoding="async">
-            <img src="./assets/camela-yoga.jpg" alt="Camela in a soft yoga glamour photo" width="675" height="1200" loading="lazy" decoding="async">
+            <picture>
+              <source srcset="./assets/camela-balcony.webp" type="image/webp">
+              <img src="./assets/camela-balcony.jpg" alt="Camela in a black evening dress on a night balcony" width="675" height="1200" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source srcset="./assets/camela-bedroom.webp" type="image/webp">
+              <img src="./assets/camela-bedroom.jpg" alt="Camela wrapped in white sheets in soft hotel light" width="1024" height="1024" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source srcset="./assets/camela-yoga.webp" type="image/webp">
+              <img src="./assets/camela-yoga.jpg" alt="Camela in a soft yoga glamour photo" width="675" height="1200" loading="lazy" decoding="async">
+            </picture>
           </div>
         </div>
       </section>

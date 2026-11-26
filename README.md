@@ -41,9 +41,12 @@ Current homepage-specific assets:
 - `site/assets/favicon.svg` - browser favicon matching the CT header mark.
 - `site/assets/favicon-180.png` - touch icon generated from the same CT mark.
 - `site/assets/camela-social-card.png` - 1200×630 Open Graph/social preview.
+  Keep this file a PNG at those dimensions; declared `og:image` width and
+  height are checked against the file, not a single hardcoded size.
 - `site/assets/camela-bedroom-knit.jpg` - bedroom glamour portrait used in the
-  follow/exclusive section. Keep descriptive filenames instead of generic or
-  stale names such as `camela-beach.jpg`.
+  follow section, with a `.webp` sibling. Homepage photos keep the JPEG and
+  also ship WebP. Keep descriptive filenames instead of generic or stale names
+  such as `camela-beach.jpg`.
 
 ## Local Preview
 
