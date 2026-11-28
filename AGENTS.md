@@ -91,6 +91,20 @@ Shared Camela skills remain owned by the private sibling.
   `www.camelatoe.pl` are redirect-only aliases.
 - Keep the `pages.dev` mirror out of search results.
 - The homepage Facebook button intentionally points to the Kamila Palec profile via ID 558918060640371 (`https://www.facebook.com/558918060640371`) per the owner (Nov 19, 2026) and must not be changed to the Page.
+- As of 2026-11-28, the public brand entity is one Person,
+  `https://camelatoe.com/#camela`. Every embedded copy of that node uses the
+  same `sameAs` list, in this order: Instagram
+  `https://www.instagram.com/cemelatoe/`, Facebook
+  `https://www.facebook.com/558918060640371`, Fanvue
+  `https://www.fanvue.com/camela_toe`, Telegram `https://t.me/camela_toe`.
+  Homepage `WebSite.publisher` references that `@id`. Guide Article publishers
+  are that Person, and each Article is part of `https://camelatoe.com/#website`.
+  The homepage official-links line says camelatoe.com is the official website
+  and names the official profiles in plain text, without new social hrefs.
+  Do not add a second analytics beacon. Real-user data for camelatoe.com is
+  Cloudflare Web Analytics on the Pages site `camela-toe.pages.dev +2`
+  (site tag `50fda26f166440189ad237f54d0284db`). The separate automatic-setup
+  site named `camelatoe.com` shows 0 and is not the one to read.
 - Validate with `python3 scripts/validate_site_seo.py` before deployment.
 - As of 2026-11-21, `/camel-toe/` is the clothing overview, including swimwear;
   `/camel-toe/meaning/` answers the definition query; `/camel-toe/leggings/`

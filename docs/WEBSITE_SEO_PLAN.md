@@ -1,6 +1,6 @@
 # Camela Toe SEO Goal and Operating Plan
 
-Last updated: 2026-11-26
+Last updated: 2026-11-28
 
 ## North-star goal
 
@@ -38,8 +38,10 @@ later reviews. It is not evidence that a content change will produce it.
 - A real crawler-readable `robots.txt` and XML sitemap.
 - A real `404.html`, preventing unknown URLs from returning homepage content.
 - `noindex` on legal utility pages and the `camela-toe.pages.dev` mirror.
-- `WebSite`, `ProfilePage` (homepage `mainEntity` is a `Person`), `Organization`,
-  `Article`, `BreadcrumbList`, and appropriate FAQ structured data.
+- `WebSite`, `ProfilePage` (homepage `mainEntity` is one `Person` `@id`
+  `https://camelatoe.com/#camela`), `Article` (publisher is that same Person;
+  the author stays Camela Toe Editorial), `BreadcrumbList`, and appropriate
+  FAQ structured data.
 - A topic hub plus two independently useful supporting guides.
 - Descriptive internal links between the creator profile, topic hub, definition,
   and leggings guide.
@@ -78,6 +80,11 @@ hosting migration. The initial setup was completed on 2026-07-23:
      and activated by a production deployment on 2026-07-23**.
    - The live `https://camelatoe.com/` response was verified to contain
      Cloudflare's injected analytics beacon.
+   - As of 2026-11-28, read real-user data for camelatoe.com on the Pages
+     site `camela-toe.pages.dev +2` (site tag
+     `50fda26f166440189ad237f54d0284db`). The separate automatic-setup site
+     named `camelatoe.com` shows 0 and is not the one to read. Do not add a
+     second analytics beacon.
    - Record Search Console queries, pages, countries, clicks, and impressions
      monthly. Cloudflare request counts are not a substitute for search data.
 
@@ -214,6 +221,52 @@ What changed, and why:
 
 This does not promise a ranking or Core Web Vitals change. After deployment,
 request indexing for the homepage only. Do not resubmit the three guides.
+
+## November 28, 2026 brand entity
+
+Search Console for October 30–November 26, 2026 showed 0 clicks, 289
+impressions, and an average position of 37.8. The homepage had 52 impressions
+at an average position of 9.1. Brand queries were still behind aggregators:
+“camela toe” at 10.0, “camila toe” at 4.5, and “cameotoe” at 6.7. “camelatoe”
+had no row. URL Inspection for the homepage said indexed, with ProfilePage
+reporting 1 valid item. No title or meta description changed this week. The
+November 21 and November 26 snippet tests are still in their measurement
+window. No new URL was added.
+
+What changed, and why:
+
+- Homepage `WebSite.alternateName` is now `["Camela Toe Official",
+  "CamelaToe", "camelatoe"]`, and `WebSite.publisher` is
+  `{"@id":"https://camelatoe.com/#camela"}`.
+- The homepage `Person` keeps the name Camela Toe and the same four `sameAs`
+  URLs in the same order. `alternateName` adds `CamelaToe` and `camelatoe`.
+  `ProfilePage.dateModified` is `2026-11-28T09:00:00+01:00`.
+- Each guide `Article` publisher is a full copy of that Person, including
+  `@id`, name, `alternateName`, description, url `https://camelatoe.com/`,
+  image, and the identical `sameAs` list. There is no shared template, so
+  the validator rejects a copy that drifts. `isPartOf` points at
+  `https://camelatoe.com/#website`. The author stays Camela Toe Editorial
+  at `https://camelatoe.com/#about`, which is the homepage
+  `section id="about"`.
+- Article `dateModified` values stay on the editorial dates (meaning and hub
+  2026-11-21, leggings 2026-11-19). The visible “Updated” lines stay too.
+  Sitemap `lastmod` is 2026-11-28 for all four URLs because the markup
+  changed, including the guide JSON-LD.
+- The homepage follow section has an official-links line: camelatoe.com is
+  the official website, the official profiles are named in plain text
+  (Instagram @cemelatoe, Fanvue camela_toe, Telegram t.me/camela_toe, and the
+  Facebook profile already linked on the page). Profiles on other
+  subscription or aggregator sites that are not listed on that line are not hers. No
+  Instagram, Fanvue, Telegram, or Facebook `href` was added or changed.
+- `scripts/validate_site_seo.py` now requires the shared Person `sameAs`, the
+  WebSite publisher reference, and the Facebook URL
+  `https://www.facebook.com/558918060640371` wherever Facebook appears in
+  site HTML.
+
+This does not promise that brand queries will move to position 1. After
+deployment, request indexing for the homepage and the three guides so Google
+can recrawl the entity markup. Do not rewrite the measured titles or meta
+descriptions in that request.
 
 ## Editorial roadmap
 

@@ -1,6 +1,6 @@
 # Camela Toe Website Deployment
 
-Last reviewed: 2026-11-19
+Last reviewed: 2026-11-28
 
 ## Project Boundary
 
@@ -134,6 +134,14 @@ rotate them in GitHub and Cloudflare together when required.
 
 Do not also enable Cloudflare dashboard Git integration unless duplicate
 production deploy systems are intentional.
+
+## Cloudflare Web Analytics
+
+Real-user data for `camelatoe.com` is the Pages site
+`camela-toe.pages.dev +2` (site tag `50fda26f166440189ad237f54d0284db`),
+confirmed 2026-11-28. The separate automatic-setup site named
+`camelatoe.com` shows 0 and is not the one to read. Do not add a second
+analytics beacon. Cloudflare injects the existing beacon on production.
 
 ## Search Console
 

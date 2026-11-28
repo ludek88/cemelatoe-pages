@@ -148,6 +148,76 @@ class SitemapAndContentContractTest(unittest.TestCase):
             self.assertTrue(path.read_bytes().startswith(b"RIFF"), name)
 
 
+def indexable_html() -> dict[str, str]:
+    return {
+        route: path.read_text(encoding="utf-8")
+        for route, path in MODULE.discover_indexable_pages().items()
+    }
+
+
+class BrandEntityContractTest(unittest.TestCase):
+    def test_live_pages_share_one_camela_entity(self) -> None:
+        self.assertEqual(MODULE.entity_contract_errors_for_pages(indexable_html()), [])
+
+    def test_live_site_passes_the_seo_contract(self) -> None:
+        self.assertEqual(MODULE.validate(), [])
+
+    def test_facebook_markup_stays_on_the_owner_profile(self) -> None:
+        self.assertEqual(MODULE.facebook_markup_errors(), [])
+
+    def test_rejects_reordered_homepage_same_as(self) -> None:
+        pages = indexable_html()
+        pages["/"] = pages["/"].replace(
+            '"https://www.instagram.com/cemelatoe/",\n'
+            '                "https://www.facebook.com/558918060640371"',
+            '"https://www.facebook.com/558918060640371",\n'
+            '                "https://www.instagram.com/cemelatoe/"',
+            1,
+        )
+        errors = MODULE.entity_contract_errors_for_pages(pages)
+        self.assertTrue(any(error.startswith("/") and "sameAs" in error for error in errors))
+
+    def test_rejects_a_camela_reference_without_the_shared_same_as(self) -> None:
+        pages = indexable_html()
+        pages["/camel-toe/"] = """
+        <script type="application/ld+json">
+        {"@type":"Article","isPartOf":{"@id":"https://camelatoe.com/#website"},
+         "publisher":{"@id":"https://camelatoe.com/#camela"}}
+        </script>
+        """
+        errors = MODULE.entity_contract_errors_for_pages(pages)
+        self.assertTrue(any("exactly one embedded Person #camela" in error for error in errors))
+        self.assertTrue(any("Article publisher must be the shared Person" in error for error in errors))
+
+    def test_rejects_a_homepage_without_a_website_node(self) -> None:
+        pages = indexable_html()
+        pages["/"] = pages["/"].replace('"@type": "WebSite"', '"@type": "WebPage"', 1)
+        errors = MODULE.entity_contract_errors_for_pages(pages)
+        self.assertTrue(any("exactly one WebSite" in error for error in errors))
+
+    def test_rejects_a_website_without_the_publisher_reference(self) -> None:
+        pages = indexable_html()
+        pages["/"] = pages["/"].replace(
+            '"publisher": {\n              "@id": "https://camelatoe.com/#camela"\n            },\n',
+            "",
+            1,
+        )
+        errors = MODULE.entity_contract_errors_for_pages(pages)
+        self.assertTrue(any("WebSite publisher must reference" in error for error in errors))
+
+    def test_rejects_a_missing_about_anchor(self) -> None:
+        pages = indexable_html()
+        pages["/"] = pages["/"].replace('id="about"', 'id="story"', 1)
+        errors = MODULE.entity_contract_errors_for_pages(pages)
+        self.assertTrue(any('id="about"' in error for error in errors))
+
+    def test_rejects_a_different_facebook_url(self) -> None:
+        html = f'<a href="{MODULE.FACEBOOK_PROFILE_URL}">Facebook</a> https://facebook.com/camelastoe'
+        errors = MODULE.facebook_markup_errors({"site/index.html": html})
+        self.assertTrue(any("camelastoe" in error for error in errors))
+        self.assertTrue(all(MODULE.FACEBOOK_PROFILE_URL in error or "camelastoe" in error for error in errors))
+
+
 class StructuredDataDateTimeTest(unittest.TestCase):
     def test_accepts_iso8601_datetime_with_offset(self) -> None:
         self.assertTrue(

@@ -22,6 +22,43 @@ REQUIRED_ROUTES = {
     "/camel-toe/meaning/",
     "/camel-toe/leggings/",
 }
+CAMELA_ID = f"{ORIGIN}/#camela"
+WEBSITE_ID = f"{ORIGIN}/#website"
+ABOUT_ID = f"{ORIGIN}/#about"
+FACEBOOK_PROFILE_URL = "https://www.facebook.com/558918060640371"
+OFFICIAL_SAME_AS = [
+    "https://www.instagram.com/cemelatoe/",
+    "https://www.facebook.com/558918060640371",
+    "https://www.fanvue.com/camela_toe",
+    "https://t.me/camela_toe",
+]
+CAMELA_PERSON = {
+    "@type": "Person",
+    "@id": CAMELA_ID,
+    "name": "Camela Toe",
+    "alternateName": ["CamelaToe", "camelatoe"],
+    "description": (
+        "A body-positive creator project promoting full-body acceptance, "
+        "natural confidence, and personal freedom through glamour, fitness, "
+        "and fashion content."
+    ),
+    "image": f"{ORIGIN}/assets/camela-hero.jpg",
+    "url": f"{ORIGIN}/",
+    "sameAs": OFFICIAL_SAME_AS,
+}
+WEBSITE_ALTERNATE_NAMES = ["Camela Toe Official", "CamelaToe", "camelatoe"]
+OFFICIAL_LINKS_SNIPPETS = (
+    "camelatoe.com is Camela Toe\u2019s official website",
+    "Instagram @cemelatoe",
+    "Fanvue camela_toe",
+    "Telegram t.me/camela_toe",
+    "Facebook profile linked on this page",
+    "are not hers",
+)
+FACEBOOK_URL_RE = re.compile(
+    r"https?://(?:[\w.-]+\.)?facebook\.com[^\s\"'<>]*",
+    re.IGNORECASE,
+)
 
 
 class PageParser(HTMLParser):
@@ -369,6 +406,169 @@ def is_iso8601_datetime_with_timezone(value: object) -> bool:
     return parsed.tzinfo is not None
 
 
+def visible_text(html: str) -> str:
+    """Return readable text, omitting JSON-LD, scripts, and style blocks."""
+    without_scripts = re.sub(
+        r"<script\b[^>]*>.*?</script>",
+        " ",
+        html,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    without_style = re.sub(
+        r"<style\b[^>]*>.*?</style>",
+        " ",
+        without_scripts,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    return " ".join(re.sub(r"<[^>]+>", " ", without_style).split())
+
+
+def json_ld_documents(html: str) -> list[object]:
+    documents: list[object] = []
+    for match in re.finditer(
+        r"<script\b[^>]*type=[\"']application/ld\+json[\"'][^>]*>(.*?)</script>",
+        html,
+        flags=re.IGNORECASE | re.DOTALL,
+    ):
+        try:
+            documents.append(json.loads(match.group(1)))
+        except json.JSONDecodeError:
+            continue
+    return documents
+
+
+def embedded_camela_nodes(value: object) -> list[dict]:
+    """Person records that define #camela, ignoring bare @id references."""
+    nodes: list[dict] = []
+    for node in structured_data_nodes(value):
+        if node.get("@id") != CAMELA_ID:
+            continue
+        if any(key in node for key in ("@type", "name", "sameAs", "url")):
+            nodes.append(node)
+    return nodes
+
+
+def references_camela(value: object) -> bool:
+    if isinstance(value, str):
+        return value == CAMELA_ID
+    if isinstance(value, dict):
+        return any(references_camela(child) for child in value.values())
+    if isinstance(value, list):
+        return any(references_camela(child) for child in value)
+    return False
+
+
+def camela_person_errors(label: str, node: dict) -> list[str]:
+    errors: list[str] = []
+    if set(node) != set(CAMELA_PERSON):
+        errors.append(
+            f"{label}: Person #camela must use exactly these fields: "
+            f"{', '.join(sorted(CAMELA_PERSON))}"
+        )
+    for key, expected in CAMELA_PERSON.items():
+        actual = node.get(key)
+        if actual != expected:
+            errors.append(
+                f"{label}: Person #camela {key} does not match the shared entity "
+                f"(expected {expected!r}, found {actual!r})"
+            )
+    return errors
+
+
+def entity_contract_errors_for_pages(pages: dict[str, str]) -> list[str]:
+    """Require one shared Person #camela wherever a page names that id."""
+    errors: list[str] = []
+    parsed = {route: json_ld_documents(html) for route, html in pages.items()}
+    homepage = pages.get("/")
+    if homepage is None:
+        return ["missing homepage for the #camela entity"]
+
+    website_nodes = [
+        node
+        for document in parsed.get("/", [])
+        for node in structured_data_nodes(document)
+        if "WebSite" in node_types(node)
+    ]
+    if len(website_nodes) != 1:
+        errors.append(f"/: expected exactly one WebSite node, found {len(website_nodes)}")
+    image_url = str(CAMELA_PERSON["image"])
+    image_path = SITE / urlparse(image_url).path.lstrip("/")
+    if not image_path.is_file():
+        errors.append(f"shared Person image is missing ({image_url})")
+
+    saw_about_url = False
+    for route, documents in sorted(parsed.items()):
+        embedded = [node for document in documents for node in embedded_camela_nodes(document)]
+        if any(references_camela(document) for document in documents) and len(embedded) != 1:
+            errors.append(
+                f"{route}: expected exactly one embedded Person #camela, found {len(embedded)}"
+            )
+        for node in embedded:
+            errors.extend(camela_person_errors(route, node))
+        for document in documents:
+            for node in structured_data_nodes(document):
+                types = node_types(node)
+                if "WebSite" in types:
+                    if node.get("publisher") != {"@id": CAMELA_ID}:
+                        errors.append(f"{route}: WebSite publisher must reference {CAMELA_ID}")
+                    if node.get("alternateName") != WEBSITE_ALTERNATE_NAMES:
+                        errors.append(
+                            f"{route}: WebSite alternateName must be {WEBSITE_ALTERNATE_NAMES}"
+                        )
+                if "Article" in types:
+                    if node.get("isPartOf") != {"@id": WEBSITE_ID}:
+                        errors.append(f"{route}: Article isPartOf must reference {WEBSITE_ID}")
+                    if node.get("publisher") != CAMELA_PERSON:
+                        errors.append(f"{route}: Article publisher must be the shared Person #camela")
+                authors = node.get("author")
+                author_nodes = authors if isinstance(authors, list) else [authors]
+                for author in author_nodes:
+                    if isinstance(author, dict) and author.get("url") == ABOUT_ID:
+                        saw_about_url = True
+
+    if saw_about_url and not re.search(r"""\bid=["']about["']""", homepage):
+        errors.append('/: author url #about needs an element id="about" on the homepage')
+
+    visible = visible_text(homepage)
+    for snippet in OFFICIAL_LINKS_SNIPPETS:
+        if snippet not in visible:
+            errors.append(f"/: official-links line is missing {snippet!r}")
+    for url in OFFICIAL_SAME_AS:
+        if f'href="{url}"' not in homepage:
+            errors.append(f"/: official profile href must stay {url}")
+    return errors
+
+
+def entity_contract_errors(indexable: dict[str, Path] | None = None) -> list[str]:
+    indexable = indexable or discover_indexable_pages()
+    pages = {
+        route: path.read_text(encoding="utf-8")
+        for route, path in indexable.items()
+        if path.is_file()
+    }
+    return entity_contract_errors_for_pages(pages)
+
+
+def facebook_markup_errors(html_by_label: dict[str, str] | None = None) -> list[str]:
+    """Keep every Facebook URL on the public profile the owner selected."""
+    if html_by_label is None:
+        html_by_label = {
+            str(path.relative_to(ROOT)): path.read_text(encoding="utf-8")
+            for path in sorted(SITE.rglob("*.html"))
+        }
+    errors: list[str] = []
+    homepage = html_by_label.get("site/index.html")
+    if homepage is None or f'href="{FACEBOOK_PROFILE_URL}"' not in homepage:
+        errors.append(f"site/index.html: Facebook href must stay {FACEBOOK_PROFILE_URL}")
+    for label, html in sorted(html_by_label.items()):
+        for url in FACEBOOK_URL_RE.findall(html):
+            if url != FACEBOOK_PROFILE_URL:
+                errors.append(
+                    f"{label}: Facebook URL must stay {FACEBOOK_PROFILE_URL}, found {url}"
+                )
+    return errors
+
+
 def validate(indexable: dict[str, Path] | None = None) -> list[str]:
     errors: list[str] = []
     titles: dict[str, str] = {}
@@ -549,6 +749,9 @@ def validate(indexable: dict[str, Path] | None = None) -> list[str]:
     social_card = SITE / "assets" / "camela-social-card.png"
     if not social_card.is_file():
         errors.append("site/assets/camela-social-card.png: missing")
+
+    errors.extend(entity_contract_errors(indexable))
+    errors.extend(facebook_markup_errors())
 
     return errors
 
